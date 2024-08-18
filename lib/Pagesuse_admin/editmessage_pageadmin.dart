@@ -355,7 +355,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                               child: Text(
                                 _startDateTime == null
                                     ? 'เลือกวันและเวลาเริ่มต้น'
-                                    : 'เริ่ม: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_startDateTime!)}',
+                                    : 'เริ่ม: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_startDateTime!.add(Duration(days: 198326)))}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -367,9 +367,12 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                               onPressed: () async {
                                 DateTime? pickedDate = await showDatePicker(
                                   context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime(2100),
+                                  initialDate: DateTime.now()
+                                      .add(Duration(days: 198326)),
+                                  firstDate: DateTime.now()
+                                      .add(Duration(days: 198326)),
+                                  lastDate: DateTime(2100)
+                                      .add(Duration(days: 198326)),
                                   locale: const Locale('th', 'TH'),
                                 );
                                 if (pickedDate != null) {
@@ -401,7 +404,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                               child: Text(
                                 _endDateTime == null
                                     ? 'เลือกวันและเวลาสิ้นสุด'
-                                    : 'สิ้นสุด: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_endDateTime!)}',
+                                    : 'สิ้นสุด: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_endDateTime!.add(Duration(days: 198326)))}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,

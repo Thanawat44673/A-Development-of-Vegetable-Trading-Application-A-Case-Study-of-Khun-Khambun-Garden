@@ -32,30 +32,6 @@ class _Home1State extends State<Home1> {
     );
   }
 
-  /*Future<void> _signInWithGoogle(BuildContext context) async {
-    try {
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
-        final UserCredential authResult =
-            await _auth.signInWithCredential(credential);
-        final User? user = authResult.user;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Welcomehome()),
-        );
-      }
-    } catch (error) {
-      print('Error signing in with Google: $error');
-    }
-  }*/
-
   Profile profile = Profile(
       //กดหนดเก็บค่า
       Name: '',
@@ -70,7 +46,6 @@ class _Home1State extends State<Home1> {
   final TextEditingController _Email = TextEditingController();
   final TextEditingController _Password = TextEditingController();
 
-  String _password = '';
   bool _passwordVisible = false;
 
   void _togglePasswordVisibility() {

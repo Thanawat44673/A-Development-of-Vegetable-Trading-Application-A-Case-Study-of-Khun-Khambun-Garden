@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_appshop1/Pagesuse_admin/Statistics_Screen/MonthDetailsScreen.dart';
+import 'package:flutter_appshop1/Pagesuse_admin/Statistics_Screen/WeeklyDetailsScreen.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
 
 class StatisticsAdmin extends StatefulWidget {
   const StatisticsAdmin({super.key});
@@ -17,21 +20,26 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
   DateTime _selectedDate = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
-  // Helper method to normalize a DateTime object
   DateTime _normalizeDate(DateTime date) {
     return DateTime(date.year, date.month, date.day);
   }
 
-  // Helper method to get the start of the week
   DateTime _startOfWeek(DateTime date) {
     int daysToSubtract = date.weekday - DateTime.monday;
     return _normalizeDate(date.subtract(Duration(days: daysToSubtract)));
   }
 
-  // Helper method to get the end of the week
   DateTime _endOfWeek(DateTime date) {
     int daysToAdd = DateTime.sunday - date.weekday;
     return _normalizeDate(date.add(Duration(days: daysToAdd)));
+  }
+
+  DateTime _startOfMonth(DateTime date) {
+    return DateTime(date.year, date.month, 1);
+  }
+
+  DateTime _endOfMonth(DateTime date) {
+    return DateTime(date.year, date.month + 1, 0);
   }
 
   @override
@@ -58,11 +66,8 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
             for (var doc in snapshot.data!.docs) {
               try {
                 var date = (doc['timestamp'] as Timestamp).toDate();
-                var dateKey = _normalizeDate(date); // Normalize date
+                var dateKey = _normalizeDate(date);
                 var income = doc['price'] as double;
-
-                // Debugging
-                print('Document Date: $dateKey, Income: $income');
 
                 if (_incomeData.containsKey(dateKey)) {
                   _incomeData[dateKey] = _incomeData[dateKey]! + income;
@@ -74,31 +79,40 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
               }
             }
 
-            print('Selected Date: $_selectedDate');
-            print('Income Data Map: $_incomeData');
-
             var startOfWeek = _startOfWeek(_selectedDate);
             var endOfWeek = _endOfWeek(_selectedDate);
+            var startOfMonth = _startOfMonth(_selectedDate);
+            var endOfMonth = _endOfMonth(_selectedDate);
 
             double weeklyIncome = 0;
+            double monthlyIncome = 0;
+
+            // Calculate weekly income
             for (var i = 0; i < 7; i++) {
               var currentDate = startOfWeek.add(Duration(days: i));
               var normalizedCurrentDate = _normalizeDate(currentDate);
               if (_incomeData.containsKey(normalizedCurrentDate)) {
                 weeklyIncome += _incomeData[normalizedCurrentDate]!;
               }
-
-              // Debugging
-              print('Current Date: $currentDate');
-              print('Normalized Current Date: $normalizedCurrentDate');
-              print(
-                  'Income for Current Date: ${_incomeData[normalizedCurrentDate]}');
             }
 
-            // Debugging
-            print('Start of Week: $startOfWeek');
-            print('End of Week: $endOfWeek');
-            print('Weekly Income: $weeklyIncome');
+            // Calculate monthly income
+            for (var i = 0; i < endOfMonth.day; i++) {
+              var currentDate = startOfMonth.add(Duration(days: i));
+              var normalizedCurrentDate = _normalizeDate(currentDate);
+              if (_incomeData.containsKey(normalizedCurrentDate)) {
+                monthlyIncome += _incomeData[normalizedCurrentDate]!;
+              }
+            }
+
+            String formattedSelectedDate = DateFormat('d MMMM y', 'th_TH')
+                .format(_selectedDate.add(Duration(days: 198326)));
+            String formattedStartOfWeek = DateFormat('d MMM y', 'th_TH')
+                .format(startOfWeek.add(Duration(days: 198326)));
+            String formattedEndOfWeek = DateFormat('d MMM y', 'th_TH')
+                .format(endOfWeek.add(Duration(days: 198326)));
+            String formattedStartOfMonth = DateFormat('MMMM y', 'th_TH')
+                .format(startOfMonth.add(Duration(days: 198326)));
 
             return Column(
               children: [
@@ -107,6 +121,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                   firstDay: DateTime(2020),
                   lastDay: DateTime(2030),
                   calendarFormat: _calendarFormat,
+                  locale: 'th_TH', // Set locale to Thai
                   selectedDayPredicate: (day) => isSameDay(
                       _normalizeDate(_selectedDate), _normalizeDate(day)),
                   eventLoader: (day) {
@@ -122,9 +137,6 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
                       _selectedDate = selectedDay;
-                      print('New Selected Date: $_selectedDate');
-                      print(
-                          'Income for selected date: ${_incomeData[_normalizeDate(selectedDay)]}');
                     });
                   },
                   onFormatChanged: (format) {
@@ -142,6 +154,15 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                       shape: BoxShape.circle,
                     ),
                   ),
+                  headerStyle: HeaderStyle(
+                    formatButtonVisible: false, // Hide the format button
+                    titleCentered: true,
+                    titleTextFormatter: (date, locale) {
+                      return DateFormat('MMMM y', 'th_TH').format(date.add(
+                          Duration(
+                              days: 198326))); // Adjust year to Buddhist year
+                    },
+                  ),
                 ),
                 SizedBox(height: 16),
                 if (_incomeData[_normalizeDate(_selectedDate)] != null)
@@ -158,8 +179,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                         );
                       },
                       child: ListTile(
-                        title: Text(
-                            'วันที่: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year + 543}'),
+                        title: Text('วันที่: $formattedSelectedDate'),
                         subtitle: Text(
                             'รายได้ที่ได้รับ: ${_incomeData[_normalizeDate(_selectedDate)]!.toStringAsFixed(2)} บาท'),
                       ),
@@ -178,11 +198,24 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                 if (weeklyIncome > 0)
                   Card(
                     margin: EdgeInsets.all(10),
-                    child: ListTile(
-                      title: Text(
-                          'สัปดาห์ที่ ${startOfWeek.day}/${startOfWeek.month}/${startOfWeek.year + 543} - ${endOfWeek.day}/${endOfWeek.month}/${endOfWeek.year + 543}'),
-                      subtitle: Text(
-                          'รายได้ที่ได้รับ: ${weeklyIncome.toStringAsFixed(2)} บาท'),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WeeklyDetailsScreen(
+                              startOfWeek: startOfWeek,
+                              endOfWeek: endOfWeek,
+                            ),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        title: Text(
+                            'สัปดาห์ที่: $formattedStartOfWeek - $formattedEndOfWeek'),
+                        subtitle: Text(
+                            'รายได้ที่ได้รับ: ${weeklyIncome.toStringAsFixed(2)} บาท'),
+                      ),
                     ),
                   )
                 else
@@ -190,6 +223,38 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                     padding: EdgeInsets.all(16.0),
                     child: Text(
                       'ไม่มีข้อมูลรายได้สำหรับสัปดาห์ที่เลือก',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                SizedBox(height: 16),
+                if (monthlyIncome > 0)
+                  Card(
+                    margin: EdgeInsets.all(10),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MonthlyDetailsScreen(
+                              startOfMonth: startOfMonth,
+                              endOfMonth: endOfMonth,
+                            ),
+                          ),
+                        );
+                      },
+                      child: ListTile(
+                        title: Text('เดือน: $formattedStartOfMonth'),
+                        subtitle: Text(
+                            'รายได้ที่ได้รับ: ${monthlyIncome.toStringAsFixed(2)} บาท'),
+                      ),
+                    ),
+                  )
+                else
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'ไม่มีข้อมูลรายได้สำหรับเดือนที่เลือก',
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),

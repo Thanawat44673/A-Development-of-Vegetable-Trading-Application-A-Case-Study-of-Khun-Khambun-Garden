@@ -14,7 +14,6 @@ class Home2 extends StatefulWidget {
 class _adminlogin extends State<Home2> {
   AuthService authService = AuthService();
 
-  String _password = '';
   bool _passwordVisible = false;
 
   void _togglePasswordVisibility() {

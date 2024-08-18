@@ -8,7 +8,7 @@ import 'package:flutter_appshop1/Pagesuse_admin/editcontace_pageadmin.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/editmessage_pageadmin.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/oder_admin.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/profile_pagesadmin.dart';
-import 'package:flutter_appshop1/Pagesuse_admin/statistics_pageadmin.dart';
+import 'package:flutter_appshop1/Pagesuse_admin/statistics_admin.dart';
 
 class Welcomehomeadmin extends StatefulWidget {
   const Welcomehomeadmin({super.key});
