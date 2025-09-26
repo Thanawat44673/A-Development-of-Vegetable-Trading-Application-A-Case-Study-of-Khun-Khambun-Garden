@@ -18,7 +18,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/number1.jpg'), // Replace this with your image asset
+                'assets/backgroud2.jpg'), // Replace this with your image asset
             fit: BoxFit.cover,
           ),
         ),
@@ -98,7 +98,6 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
 
     FirebaseFirestore.instance.runTransaction((transaction) async {
       DocumentSnapshot productSnapshot = await transaction.get(productRef);
-      DocumentSnapshot orderSnapshot = await transaction.get(orderRef);
 
       if (!productSnapshot.exists) {
         throw Exception("ไม่พบสินค้า");
@@ -107,7 +106,8 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
       Map<String, dynamic> data =
           productSnapshot.data() as Map<String, dynamic>;
       bool isBogo = data['bogo'] ?? false;
-      Timestamp promotionEnd = data['bogo_end'];
+      Timestamp? promotionEnd =
+          data['bogo_end'] as Timestamp?; // Handle null safety here
       bool isPromotionValid = isBogo &&
           promotionEnd != null &&
           promotionEnd.toDate().isAfter(DateTime.now());

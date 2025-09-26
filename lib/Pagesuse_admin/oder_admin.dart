@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/OrderDetailScreen.dart';
+import 'package:intl/intl.dart';
 
 class OrderManagementScreen extends StatefulWidget {
   @override
@@ -15,48 +16,192 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                'assets/number1.jpg'), // Replace this with your image asset
+            image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('orders').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('orders')
+              .orderBy('timestamp', descending: true)
+              .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             }
             final orders = snapshot.data!.docs;
 
+            // Group orders by customer and day
+            Map<String, List<DocumentSnapshot>> groupedOrders = {};
+            for (var order in orders) {
+              final customer = order['ชื่อลูกค้า'];
+              final timestamp = order['timestamp'] as Timestamp;
+              final orderDate = DateFormat('yyyy-MM-dd')
+                  .format(timestamp.toDate().add(Duration(days: 198326)));
+
+              String groupKey = '$customer-$orderDate';
+
+              if (!groupedOrders.containsKey(groupKey)) {
+                groupedOrders[groupKey] = [];
+              }
+              groupedOrders[groupKey]!.add(order);
+            }
+
             return ListView.builder(
-              itemCount: orders.length,
+              itemCount: groupedOrders.keys.length,
               itemBuilder: (context, index) {
-                final doc = orders[index];
+                final groupKey = groupedOrders.keys.elementAt(index);
+                final groupOrders = groupedOrders[groupKey]!;
+
+                // Display customer name and date (groupKey is in format 'customer-date')
+                final splitKey = groupKey.split('-');
+                final customerName = splitKey[0];
+                final orderDate =
+                    splitKey.sublist(1).join('-'); // Rejoin the date
+
+                // Check for pending orders and approved orders
+                bool hasPendingOrders =
+                    groupOrders.any((doc) => doc['status'] == 'รอการอนุมัติ');
+                bool hasApprovedOrders =
+                    groupOrders.any((doc) => doc['status'] == 'อนุมัติแล้ว');
+                bool hasInsufficientStockPendingOrders =
+                    groupOrders.any((doc) => doc['status'] == 'รอการอนุมัติ');
+
                 return Card(
                   color: Color.fromARGB(255, 255, 255, 255),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                   margin: const EdgeInsets.all(10),
-                  child: ListTile(
-                    title: Text(doc['name']),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('จำนวน: ${doc['quantity']} กก.'),
-                        Text('ราคารวม: ${doc['price'] * doc['quantity']} บาท'),
-                        Text('สถานะ: ${doc['status']}'),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              OrderDetailScreen(orderId: doc.id),
+                  child: ExpansionTile(
+                    title: Text('$customerName - $orderDate'),
+                    children: [
+                      // Button to approve all pending orders for this customer
+                      if (hasPendingOrders)
+                        ElevatedButton(
+                          onPressed: () =>
+                              _approveAllOrdersForCustomer(groupOrders),
+                          child: Text(
+                            'อนุมัติออเดอร์ทั้งหมดของ $customerName',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            iconColor: Color.fromARGB(
+                                255, 0, 0, 0), // Background color
+                            shadowColor: Colors.white, // Text color
+                            elevation: 5, // Add a shadow effect to the button
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 20), // Increase padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // Rounded corners
+                              side: BorderSide(
+                                  color: Colors.black,
+                                  width: 2), // Border around the button
+                            ),
+                          ),
                         ),
-                      );
-                    },
+
+                      // Button to confirm all deliveries for approved orders
+                      if (hasApprovedOrders)
+                        ElevatedButton(
+                          onPressed: () =>
+                              _confirmAllDeliveriesForCustomer(groupOrders),
+                          child: Text(
+                            'ยืนยันการส่งทั้งหมดของ $customerName',
+                            style: TextStyle(
+                                fontSize: 16, // Adjust the text size
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black // Make the text bold
+                                ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            iconColor: Colors.orange, // Background color
+                            shadowColor: Colors.white, // Text color
+                            elevation: 5, // Add a shadow effect to the button
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 20), // Increase padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // Rounded corners
+                              side: BorderSide(
+                                  color: Colors.black,
+                                  width: 2), // Border around the button
+                            ),
+                          ),
+                        ),
+
+                      // Button to cancel orders that are pending approval and have insufficient stock
+                      if (hasInsufficientStockPendingOrders)
+                        ElevatedButton(
+                          onPressed: () =>
+                              _cancelAllInsufficientStockPendingOrders(
+                                  groupOrders),
+                          child: Text(
+                            'ยกเลิกออเดอร์ทั้งหมดของ $customerName',
+                            style: TextStyle(
+                                fontSize: 16, // Adjust the text size
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    Colors.red // Make the text red for cancel
+                                ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            iconColor: Colors.red, // Background color
+                            shadowColor: Colors.white, // Text color
+                            elevation: 5, // Add a shadow effect to the button
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 20), // Increase padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // Rounded corners
+                              side: BorderSide(
+                                  color: Colors.red,
+                                  width: 2), // Border around the button
+                            ),
+                          ),
+                        ),
+
+                      ...groupOrders.map((doc) {
+                        return ListTile(
+                          title: Text(doc['name']),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('จำนวน: ${doc['quantity']} กก.'),
+                              Text(
+                                  'ราคารวม: ${doc['price'] * doc['quantity']} บาท'),
+                              Text('สถานะ: ${doc['status']}'),
+                            ],
+                          ),
+                          trailing: (doc['status'] ==
+                                  'รอการอนุมัติ') // Show cancel button only if pending
+                              ? IconButton(
+                                  icon: Icon(Icons.cancel, color: Colors.red),
+                                  onPressed: () {
+                                    _cancelOrder(doc.id, doc['veggieId'],
+                                        doc['quantity']);
+                                  },
+                                )
+                              : null, // No cancel button if the status is not 'รอการอนุมัติ'
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    OrderDetailScreen(orderId: doc.id),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ],
                   ),
                 );
               },
@@ -64,6 +209,68 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
           },
         ),
       ),
+    );
+  }
+
+  // ฟังก์ชั่น อนุมัติสินค้าทั้งหมดโดย ไม่จำเป็นต้องไปกดอนุมัติทีละตัว
+  void _approveAllOrdersForCustomer(List<DocumentSnapshot> groupOrders) {
+    for (var order in groupOrders) {
+      if (order['status'] == 'รอการอนุมัติ') {
+        _updateOrderStatus(order.id, 'อนุมัติแล้ว');
+      }
+    }
+  }
+
+  // Function to confirm all deliveries for approved orders
+  void _confirmAllDeliveriesForCustomer(List<DocumentSnapshot> groupOrders) {
+    for (var order in groupOrders) {
+      if (order['status'] == 'อนุมัติแล้ว') {
+        _updateOrderStatus(order.id, 'คำสั่งซื้อสำเร็จ');
+      }
+    }
+  }
+
+  // Function to cancel pending orders with insufficient stock
+  void _cancelAllInsufficientStockPendingOrders(
+      List<DocumentSnapshot> groupOrders) {
+    for (var order in groupOrders) {
+      if (order['status'] == 'รอการอนุมัติ') {
+        _updateOrderStatus(order.id, 'ยกเลิกคำสั่งซื้อ');
+      }
+    }
+  }
+
+  void _cancelOrder(String orderId, String productId, int quantity) async {
+    DocumentReference productRef =
+        FirebaseFirestore.instance.collection('Vegetable').doc(productId);
+    DocumentReference orderRef =
+        FirebaseFirestore.instance.collection('orders').doc(orderId);
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot productSnapshot = await transaction.get(productRef);
+
+      if (!productSnapshot.exists) {
+        throw Exception("ไม่พบสินค้า");
+      }
+
+      Map<String, dynamic> data =
+          productSnapshot.data() as Map<String, dynamic>;
+      bool isBogo = data['bogo'] ?? false;
+      Timestamp? promotionEnd =
+          data['bogo_end'] as Timestamp?; // Handle null safety here
+      bool isPromotionValid = isBogo &&
+          promotionEnd != null &&
+          promotionEnd.toDate().isAfter(DateTime.now());
+
+      int quantityToRestore = isPromotionValid ? quantity : quantity;
+      int newStock = productSnapshot['จำนวนผัก'] + quantityToRestore;
+
+      transaction.update(productRef, {'จำนวนผัก': newStock});
+      transaction.delete(orderRef);
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('คำสั่งซื้อถูกยกเลิกแล้ว')),
     );
   }
 
@@ -84,11 +291,22 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
         },
         child: Text('ยืนยันการส่ง'),
       );
+    } else if (status == 'รอการอนุมัติ') {
+      return ElevatedButton(
+        onPressed: () {
+          _updateOrderStatus(doc.id, 'ยกเลิกคำสั่งซื้อ');
+        },
+        child: Text('ยกเลิกออเดอร์'),
+        style: ElevatedButton.styleFrom(
+          iconColor: Colors.red,
+        ),
+      );
     } else {
-      return Container(); // ไม่ต้องการ action สำหรับคำสั่งซื้อที่เสร็จสิ้นแล้ว
+      return Container(); // No button for completed or canceled orders
     }
   }
 
+  // Function to update order status
   void _updateOrderStatus(String orderId, String newStatus) {
     FirebaseFirestore.instance.collection('orders').doc(orderId).update({
       'status': newStatus,
@@ -96,7 +314,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Order status updated to $newStatus')),
+      SnackBar(content: Text('สถานะการสั่งซื้อได้รับการอัปเดตเป็น $newStatus')),
     );
   }
 }

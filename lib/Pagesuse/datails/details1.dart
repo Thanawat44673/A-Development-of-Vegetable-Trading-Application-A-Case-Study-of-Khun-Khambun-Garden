@@ -183,6 +183,20 @@ class _Details1State extends State<Details1>
     return data['ราคาผัก'];
   }
 
+  double? _getPercentageDiscount(Map<String, dynamic> data) {
+    if (data.containsKey('percentage_discount')) {
+      return data['percentage_discount'];
+    }
+    return null;
+  }
+
+  double? _getDiscountPrice1(Map<String, dynamic> data) {
+    if (data.containsKey('discount_price')) {
+      return data['discount_price'];
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final data = widget.veggie.data() as Map<String, dynamic>?;
@@ -203,6 +217,8 @@ class _Details1State extends State<Details1>
     bool isDiscountPeriod2 = _isDiscountPeriod2(data);
     double discountedPrice = _calculateDiscountedPrice(data);
     double discountedPrice1 = _calculateDiscountedPrice1(data);
+    double? percentageDiscount = _getPercentageDiscount(data);
+    double? discountPrice = _getDiscountPrice1(data);
 
     return Scaffold(
       appBar: AppBar(
@@ -261,7 +277,7 @@ class _Details1State extends State<Details1>
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/number1.jpg'),
+            image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -302,7 +318,7 @@ class _Details1State extends State<Details1>
                   children: [
                     if (isDiscountPeriod)
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${data['ราคาผัก']} บาท',
@@ -314,19 +330,23 @@ class _Details1State extends State<Details1>
                             ),
                           ),
                           if (discountedPrice != null)
-                            Text(
-                              '$discountedPrice บาท',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 22,
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  '$discountedPrice บาท (-${discountPrice} บาท)',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ],
                             ),
                         ],
                       )
                     else if (isDiscountPeriod2)
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${data['ราคาผัก']} บาท',
@@ -338,13 +358,17 @@ class _Details1State extends State<Details1>
                             ),
                           ),
                           if (discountedPrice1 != null)
-                            Text(
-                              '$discountedPrice1 บาท',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 22,
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  '$discountedPrice1 บาท (-${percentageDiscount} %)',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 22,
+                                  ),
+                                ),
+                              ],
                             ),
                         ],
                       )

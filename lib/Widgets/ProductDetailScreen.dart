@@ -187,6 +187,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     return data['ราคาผัก'];
   }
 
+  double? _getPercentageDiscount(Map<String, dynamic> data) {
+    if (data.containsKey('percentage_discount')) {
+      return data['percentage_discount'];
+    }
+    return null;
+  }
+
+  double? _getDiscountPrice1(Map<String, dynamic> data) {
+    if (data.containsKey('discount_price')) {
+      return data['discount_price'];
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final data = widget.productDocument.data() as Map<String, dynamic>?;
@@ -207,6 +221,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     bool isDiscountPeriod2 = _isDiscountPeriod2(data);
     double discountedPrice = _calculateDiscountedPrice(data);
     double discountedPrice1 = _calculateDiscountedPrice1(data);
+    double? percentageDiscount = _getPercentageDiscount(data);
+    double? discountPrice = _getDiscountPrice1(data);
 
     return Scaffold(
       appBar: AppBar(
@@ -265,7 +281,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/number1.jpg'),
+            image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -306,7 +322,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   children: [
                     if (isDiscountPeriod)
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${data['ราคาผัก']} บาท',
@@ -318,19 +334,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                             ),
                           ),
                           if (discountedPrice != null)
-                            Text(
-                              '$discountedPrice บาท',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 22,
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  'ลดราคา ${discountPrice} บาท เหลือ $discountedPrice บาท',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
                             ),
                         ],
                       )
                     else if (isDiscountPeriod2)
                       Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             '${data['ราคาผัก']} บาท',
@@ -342,13 +362,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                             ),
                           ),
                           if (discountedPrice1 != null)
-                            Text(
-                              '$discountedPrice1 บาท',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 22,
-                              ),
+                            Column(
+                              children: [
+                                Text(
+                                  'ลดราคา ${percentageDiscount} % เหลือ  $discountedPrice1 บาท',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
                             ),
                         ],
                       )

@@ -85,9 +85,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.black),
                       ),
-                      labelText: 'อีเมลผู้ใช้งาน'),
+                      labelText: 'อีเมล'),
                   validator: MultiValidator([
-                    RequiredValidator(errorText: "กรุณากรอก อีเมลผู้ใช้งาน"),
+                    RequiredValidator(errorText: "กรุณากรอก อีเมล"),
                     EmailValidator(errorText: "รูปแบบอีเมลไม่ถูกต้อง")
                   ])),
             ),

@@ -24,7 +24,7 @@ class _CartScreenState extends State<CartScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/number1.jpg'), // Replace this with your image asset
+                'assets/backgroud2.jpg'), // Replace this with your image asset
             fit: BoxFit.cover,
           ),
         ),

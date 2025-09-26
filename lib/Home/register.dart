@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_appshop1/Home/Homeuse.dart';
+import 'package:flutter_appshop1/Home/home_use.dart';
 import 'package:flutter_appshop1/Home/Map_Screen.dart';
 import 'package:flutter_appshop1/model/profilemember.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -131,9 +131,9 @@ class _RegisterState extends State<Register> {
               body: Form(
                 key: formKey,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/number1.jpg'),
+                      image: AssetImage('assets/backgroud2.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -145,7 +145,7 @@ class _RegisterState extends State<Register> {
                           padding: EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Name,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -163,10 +163,10 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Lastname,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -184,7 +184,7 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                               controller: _Email,
                               decoration: InputDecoration(
@@ -247,10 +247,10 @@ class _RegisterState extends State<Register> {
                             onChanged: _validatePassword2,
                             obscureText: !_passwordVisible2,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                               labelText: 'กรอกรหัสผ่านอีกครั้ง',
@@ -276,11 +276,11 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Number,
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),

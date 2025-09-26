@@ -18,7 +18,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
   final TextEditingController _Price = TextEditingController();
   final TextEditingController _Number_product = TextEditingController();
 
-  String imageUrl = '';
+  String? imageUrl;
 
   final usersCollection = FirebaseFirestore.instance.collection("Vegetable");
 
@@ -37,8 +37,10 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
     });
   }
 
-  void showImagePickerOption(BuildContext context) {
-    showModalBottomSheet(
+  Future<String?> showImagePickerOption(BuildContext context) async {
+    String? imageUrl;
+
+    await showModalBottomSheet(
         context: context,
         builder: (builder) {
           return Padding(
@@ -58,7 +60,6 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                             DateTime.now().microsecondsSinceEpoch.toString();
                         Reference ref = FirebaseStorage.instance.ref();
                         Reference referenceDireImages = ref.child('images');
-
                         Reference referenceImageaToUpload =
                             referenceDireImages.child(fileName);
 
@@ -71,8 +72,11 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                           Fluttertoast.showToast(
                               msg: "อัพโหลดรูปโปรไฟล์เรียบร้อยแล้ว",
                               gravity: ToastGravity.BOTTOM);
-                        } catch (error) {}
-                        Navigator.of(context).pop();
+                        } catch (error) {
+                          // จัดการ error ได้ตามความเหมาะสม
+                        }
+                        Navigator.of(context)
+                            .pop(imageUrl); // คืนค่า imageUrl กลับไป
                       },
                       child: SizedBox(
                         child: Column(
@@ -92,25 +96,29 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                       onTap: () async {
                         final file = await ImagePicker()
                             .pickImage(source: ImageSource.camera);
+                        if (file == null) return;
+
                         String fileName =
                             DateTime.now().microsecondsSinceEpoch.toString();
                         Reference ref = FirebaseStorage.instance.ref();
                         Reference referenceDireImages = ref.child('images');
-
                         Reference referenceImageaToUpload =
                             referenceDireImages.child(fileName);
 
                         try {
                           await referenceImageaToUpload
-                              .putFile(File(file!.path));
+                              .putFile(File(file.path));
 
                           imageUrl =
                               await referenceImageaToUpload.getDownloadURL();
                           Fluttertoast.showToast(
                               msg: "อัพโหลดรูปโปรไฟล์เรียบร้อยแล้ว",
                               gravity: ToastGravity.BOTTOM);
-                        } catch (error) {}
-                        Navigator.of(context).pop();
+                        } catch (error) {
+                          // จัดการ error ได้ตามความเหมาะสม
+                        }
+                        Navigator.of(context)
+                            .pop(imageUrl); // คืนค่า imageUrl กลับไป
                       },
                       child: SizedBox(
                         child: Column(
@@ -130,210 +138,293 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
             ),
           );
         });
+
+    return imageUrl; // คืนค่า URL ของรูปภาพกลับไป
   }
 
   final CollectionReference _Vegetable =
       FirebaseFirestore.instance.collection("Vegetable");
+
   void _create([DocumentSnapshot? documentSnapshot]) async {
     await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                right: 20,
-                left: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Center(
-                  child: Text(
-                    "เพิ่มสินค้า",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext ctx) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 20,
+            right: 20,
+            left: 20,
+            bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Center(
+                child: Text(
+                  "เพิ่มสินค้า",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                TextField(
-                  controller: _Product,
-                  decoration:
-                      const InputDecoration(labelText: 'ชื่อผัก', hintText: ''),
-                ),
-                TextField(
-                  controller: _Price,
-                  keyboardType: TextInputType.number,
-                  decoration:
-                      const InputDecoration(labelText: 'ราคาผัก', hintText: ''),
-                ),
-                TextField(
-                  controller: _Number_product,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      labelText: 'จำนวนผัก', hintText: ''),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Stack(children: [
-                  Center(
-                    child: IconButton(
-                      onPressed: () {
-                        showImagePickerOption(context);
-                      },
-                      icon: const Icon(Icons.add_a_photo),
-                    ),
-                  ),
-                ]),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
+              ),
+              TextField(
+                controller: _Product,
+                decoration: const InputDecoration(labelText: 'ชื่อผัก'),
+              ),
+              TextField(
+                controller: _Price,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'ราคาผัก'),
+              ),
+              TextField(
+                controller: _Number_product,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'จำนวนผัก'),
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: Stack(
                   children: [
-                    ElevatedButton(
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage:
+                          imageUrl != null ? NetworkImage(imageUrl!) : null,
+                      child: imageUrl == null
+                          ? const Icon(Icons.add_a_photo,
+                              size: 50, color: Colors.white)
+                          : null,
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                        icon: const Icon(Icons.add_a_photo),
                         onPressed: () async {
-                          final String product = _Product.text;
-                          final int? number_pdt =
-                              int.tryParse(_Number_product.text);
-                          final double? price = double.tryParse(_Price.text);
-                          if (price != null) {
-                            try {
-                              FirebaseFirestore.instance
-                                  .collection("Vegetable")
-                                  .doc()
-                                  .set({
-                                'ชื่อผัก': product,
-                                'ราคาผัก': price,
-                                'จำนวนผัก': number_pdt,
-                                'รูปผัก': imageUrl
-                              });
-                            } on FirebaseAuthException catch (e) {
-                              print(e.code);
-                              //คำสั่งแสดงข้อความเวลาเขียนผิดรูปแบบ
-                            }
-                            _Product.text = '';
-                            _Price.text = '';
-                            _Number_product.text = '';
-                            formKey.currentState?.reset();
-
-                            Navigator.of(context).pop();
+                          String? uploadedUrl =
+                              await showImagePickerOption(context);
+                          if (uploadedUrl != null) {
+                            setState(() {
+                              imageUrl = uploadedUrl; // Update the image URL
+                            });
                           }
                         },
-                        child: const Text('เพิ่ม')),
-                    SizedBox(
-                      width: 10,
+                      ),
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('ยกเลิก')),
                   ],
-                )
-              ],
-            ),
-          );
-        });
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      final String product = _Product.text;
+                      final int? number_pdt =
+                          int.tryParse(_Number_product.text);
+                      final double? price = double.tryParse(_Price.text);
+
+                      if (price != null &&
+                          product.isNotEmpty &&
+                          number_pdt != null) {
+                        try {
+                          // Upload product data to Firestore
+                          await FirebaseFirestore.instance
+                              .collection("Vegetable")
+                              .doc()
+                              .set({
+                            'ชื่อผัก': product,
+                            'ราคาผัก': price,
+                            'จำนวนผัก': number_pdt,
+                            'รูปผัก': imageUrl // Use the uploaded image URL
+                          });
+                        } on FirebaseAuthException catch (e) {
+                          print(e.code);
+                        }
+
+                        // Clear the text fields
+                        _Product.clear();
+                        _Price.clear();
+                        _Number_product.clear();
+
+                        // Reset the image URL to clear the image
+                        setState(() {
+                          imageUrl = null;
+                        });
+
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: const Text('เพิ่ม'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('ยกเลิก'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _updata([DocumentSnapshot? documentSnapshot]) async {
+    String imageUrl = ''; // ประกาศตัวแปร imageUrl
+
     if (documentSnapshot != null) {
       _Product.text = documentSnapshot['ชื่อผัก'];
       _Price.text = (documentSnapshot['ราคาผัก'] as num).toDouble().toString();
       _Number_product.text =
           (documentSnapshot['จำนวนผัก'] as num).toInt().toString();
+
+      // รับ URL ของรูปภาพจาก documentSnapshot
+      imageUrl = documentSnapshot['รูปผัก'] ?? '';
     }
+
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                right: 20,
-                left: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Center(
-                  child: Text(
-                    "แก้ไขข้อมูลผัก",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextField(
-                  controller: _Product,
-                  decoration:
-                      const InputDecoration(labelText: 'ชื่อผัก', hintText: ''),
-                ),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: _Price,
-                  decoration:
-                      const InputDecoration(labelText: 'ราคาผัก', hintText: ''),
-                ),
-                TextField(
-                  controller: _Number_product,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      labelText: 'จำนวนผัก', hintText: ''),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Stack(children: [
-                  Center(
-                    child: IconButton(
-                      onPressed: () {
-                        showImagePickerOption(context);
-                      },
-                      icon: const Icon(Icons.add_a_photo),
-                    ),
-                  ),
-                ]),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
+          return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    top: 20,
+                    right: 20,
+                    left: 20,
+                    bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ElevatedButton(
-                        onPressed: () async {
-                          final String product = _Product.text;
-                          final double? price = double.tryParse(_Price.text);
-                          final int? number_pdt =
-                              int.tryParse(_Number_product.text);
-                          if (price != null) {
-                            FirebaseFirestore.instance
-                                .collection("Vegetable")
-                                .doc(documentSnapshot?.id)
-                                .update({
-                              'ชื่อผัก': product,
-                              'ราคาผัก': price,
-                              'จำนวนผัก': number_pdt,
-                              'รูปผัก': imageUrl
-                            });
-                            _Product.text = '';
-                            _Price.text = '';
-                            _Number_product.text = '';
-
-                            Navigator.of(context).pop();
-                          }
-                        },
-                        child: const Text('แก้ไข')),
-                    SizedBox(
-                      width: 10,
+                    const Center(
+                      child: Text(
+                        "แก้ไขข้อมูลผัก",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('ยกเลิก')),
+                    const SizedBox(height: 20),
+
+                    // แสดงรูปภาพ ถ้ามี URL
+                    if (imageUrl.isNotEmpty)
+                      Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey, // สีของกรอบ
+                              width: 3, // ความหนาของกรอบ
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(10), // มุมโค้งของกรอบ
+                          ),
+                          child: Image.network(
+                            imageUrl, // URL ของรูปภาพ
+                            height: 150, // ขนาดของรูป
+                            width: 150, // ขนาดของรูป
+                            fit: BoxFit.cover, // วิธีการจัดรูปภาพให้พอดีกับกรอบ
+                          ),
+                        ),
+                      )
+                    else
+                      Center(
+                        child: Text(
+                          'ไม่มีรูปภาพ', // ข้อความกรณีไม่มีรูป
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ),
+
+                    const SizedBox(height: 20),
+
+                    TextField(
+                      controller: _Product,
+                      decoration: const InputDecoration(
+                          labelText: 'ชื่อผัก', hintText: ''),
+                    ),
+                    TextField(
+                      keyboardType: TextInputType.number,
+                      controller: _Price,
+                      decoration: const InputDecoration(
+                          labelText: 'ราคาผัก', hintText: ''),
+                    ),
+                    TextField(
+                      controller: _Number_product,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          labelText: 'จำนวนผัก', hintText: ''),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    Stack(children: [
+                      Center(
+                        child: IconButton(
+                          onPressed: () async {
+                            String? newImageUrl =
+                                await showImagePickerOption(context);
+                            if (newImageUrl != null && newImageUrl.isNotEmpty) {
+                              setState(() {
+                                imageUrl = newImageUrl; // อัปเดต URL ของรูปภาพ
+                              });
+                            }
+                          },
+                          icon: const Icon(Icons.add_a_photo),
+                        ),
+                      ),
+                    ]),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        ElevatedButton(
+                            onPressed: () async {
+                              final String product = _Product.text;
+                              final double? price =
+                                  double.tryParse(_Price.text);
+                              final int? number_pdt =
+                                  int.tryParse(_Number_product.text);
+
+                              if (price != null) {
+                                Map<String, dynamic> updateData = {
+                                  'ชื่อผัก': product,
+                                  'ราคาผัก': price,
+                                  'จำนวนผัก': number_pdt,
+                                };
+
+                                // อัปเดตรูปภาพถ้ามีการเลือกใหม่
+                                if (imageUrl != null && imageUrl.isNotEmpty) {
+                                  updateData['รูปผัก'] = imageUrl;
+                                }
+
+                                FirebaseFirestore.instance
+                                    .collection("Vegetable")
+                                    .doc(documentSnapshot?.id)
+                                    .update(updateData);
+
+                                _Product.text = '';
+                                _Price.text = '';
+                                _Number_product.text = '';
+
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: const Text('แก้ไข')),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('ยกเลิก')),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
+              );
+            },
           );
         });
   }
@@ -351,7 +442,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/number1.jpg'), // Replace this with your image asset
+                'assets/backgroud2.jpg'), // Replace this with your image asset
             fit: BoxFit.cover,
           ),
         ),
@@ -378,7 +469,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                               fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                         subtitle: Text(
-                            '${documentSnapshot['ราคาผัก']} บาท/กก.                               สินค้าคงเหลือ  ${documentSnapshot['จำนวนผัก']} กก.'
+                            '${documentSnapshot['ราคาผัก']} บาท/500 กรัม                               สินค้าคงเหลือ  ${documentSnapshot['จำนวนผัก']} แพ็ค'
                                 .toString()),
                         leading: CircleAvatar(
                           backgroundImage:

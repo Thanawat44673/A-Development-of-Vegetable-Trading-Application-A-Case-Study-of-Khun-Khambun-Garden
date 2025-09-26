@@ -136,7 +136,7 @@ class _Add_u_adminState extends State<Add_u_admin> {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/number1.jpg'),
+                      image: AssetImage('assets/backgroud2.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),

@@ -2,7 +2,7 @@ import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_appshop1/Home/myhomepage.dart';
+import 'package:flutter_appshop1/Home/home_use.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/edit_pagesadmin.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/editcontace_pageadmin.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/editmessage_pageadmin.dart';
@@ -24,11 +24,11 @@ class _welcomehomeadminState extends State<Welcomehomeadmin> {
     await _auth.signOut();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Myhomepage_m()),
+      MaterialPageRoute(builder: (context) => Home1()),
     );
   }
 
-  int visit = 0;
+  int visit = 2;
   List<TabItem> items = [
     TabItem(
       icon: Icons.circle_notifications,
@@ -69,6 +69,7 @@ class _welcomehomeadminState extends State<Welcomehomeadmin> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
+        automaticallyImplyLeading: false,
         title: Text("สวนคุณคำบุญ"),
         actions: [
           IconButton(

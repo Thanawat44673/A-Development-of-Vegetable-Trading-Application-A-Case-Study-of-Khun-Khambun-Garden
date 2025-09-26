@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class MapScreen extends StatefulWidget {
   @override
@@ -14,6 +15,9 @@ class _MapScreenState extends State<MapScreen> {
   TextEditingController _addressController = TextEditingController();
   LatLng? _selectedLocation;
   Set<Marker> _markers = {};
+  List<dynamic> _placeSuggestions = [];
+  final String _googleApiKey =
+      'AIzaSyBvXm0136Sg3qIU7Uw1t_8Ro6o8UK-cOhQ'; // ใส่ API Key ของคุณที่นี่
 
   @override
   void initState() {
@@ -49,161 +53,233 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  Future<void> _searchPlaces(String query) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$query&key=$_googleApiKey&language=th';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      setState(() {
+        _placeSuggestions = result['predictions'];
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'ไม่สามารถดึงข้อมูลได้',
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
+  }
+
+  Future<void> _getPlaceDetails(String placeId) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$_googleApiKey';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      final lat = result['result']['geometry']['location']['lat'];
+      final lng = result['result']['geometry']['location']['lng'];
+
+      setState(() {
+        _selectedLocation = LatLng(lat, lng);
+        _markers.clear();
+        _markers.add(
+          Marker(
+            markerId: MarkerId("searchedLocation"),
+            position: _selectedLocation!,
+          ),
+        );
+        _mapController!.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: _selectedLocation!,
+              zoom: 17,
+            ),
+          ),
+        );
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'ไม่สามารถดึงรายละเอียดสถานที่ได้',
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+          // แสดงแผนที่ Google Map
+          GoogleMap(
+            onMapCreated: (controller) {
+              setState(() {
+                _mapController = controller;
+                if (_selectedLocation != null) {
+                  _mapController!.animateCamera(
+                    CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        target: _selectedLocation!,
+                        zoom: 17,
+                      ),
+                    ),
+                  );
+                }
+              });
+            },
+            initialCameraPosition: CameraPosition(
+              target: LatLng(0, 0), // Default position
+              zoom: 2,
+            ),
+            markers: _markers,
+            onTap: (position) {
+              setState(() {
+                _markers.clear();
+                _markers.add(
+                  Marker(
+                    markerId: MarkerId(position.toString()),
+                    position: position,
                   ),
+                );
+                _selectedLocation = position;
+              });
+            },
+          ),
+
+          // วางช่องค้นหาและปุ่มย้อนกลับบนแผนที่
+          Positioned(
+            top: 20,
+            left: 10,
+            right: 10,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      color: Colors.black,
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          TextField(
+                            controller: _addressController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black),
+                              ),
+                              labelText: 'ค้นหาตำแหน่งที่อยู่',
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                _searchPlaces(value);
+                              } else {
+                                setState(() {
+                                  _placeSuggestions.clear();
+                                });
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: TextField(
-                    controller: _addressController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
-                      labelText: 'ค้นหาตำแหน่งที่อยู่',
+
+                // แสดงรายการตำแหน่งที่แนะนำ
+                if (_placeSuggestions.isNotEmpty)
+                  Container(
+                    height: 200, // ความสูงของกล่องรายการ
+                    color: Colors.white,
+                    child: ListView.builder(
+                      itemCount: _placeSuggestions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(_placeSuggestions[index]['description']),
+                          onTap: () {
+                            _getPlaceDetails(
+                                _placeSuggestions[index]['place_id']);
+                            _addressController.clear();
+                            setState(() {
+                              _placeSuggestions.clear();
+                            });
+                          },
+                        );
+                      },
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () async {
-                    String address = _addressController.text;
-                    try {
-                      List<Location> locations =
-                          await locationFromAddress(address);
-                      if (locations.isNotEmpty) {
-                        Location location = locations.first;
-                        setState(() {
-                          _selectedLocation =
-                              LatLng(location.latitude, location.longitude);
-                          _markers.clear(); // ลบปักหมุดเก่าออก
-                          _markers.add(
-                            Marker(
-                              markerId: MarkerId("searchedLocation"),
-                              position: _selectedLocation!,
-                            ),
-                          );
-                        });
-                        _mapController!.animateCamera(
-                          CameraUpdate.newCameraPosition(
-                            CameraPosition(
-                              target: _selectedLocation!,
-                              zoom: 17,
-                            ),
-                          ),
-                        );
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: 'ไม่พบที่อยู่',
-                          gravity: ToastGravity.BOTTOM,
-                        );
-                      }
-                    } catch (e) {
-                      Fluttertoast.showToast(
-                        msg: 'เกิดข้อผิดพลาดในการค้นหาที่อยู่',
-                        gravity: ToastGravity.BOTTOM,
-                      );
-                    }
-                  },
-                ),
               ],
             ),
           ),
-          Expanded(
-            child: GoogleMap(
-              onMapCreated: (controller) {
-                setState(() {
-                  _mapController = controller;
-                  if (_selectedLocation != null) {
-                    _mapController!.animateCamera(
-                      CameraUpdate.newCameraPosition(
-                        CameraPosition(
-                          target: _selectedLocation!,
-                          zoom: 17,
-                        ),
-                      ),
-                    );
-                  }
-                });
-              },
-              initialCameraPosition: CameraPosition(
-                target: LatLng(0, 0), // Default position
-                zoom: 2,
-              ),
-              markers: _markers,
-              onTap: (position) {
-                setState(() {
+
+          // วางช่องค้นหาและปุ่มย้อนกลับบนแผนที่
+          Positioned(
+            top: 20,
+            left: 10,
+            right: 10,
+            child: Column(
+              children: [
+                // ช่องค้นหาและรายการแนะนำ
+              ],
+            ),
+          ),
+
+          // ปุ่มตำแหน่งปัจจุบัน
+          Positioned(
+            bottom: 80, // ปรับตำแหน่งให้อยู่ด้านล่างของหน้าจอ
+            left: 50,
+            right: 50,
+            child: SizedBox(
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.black87, width: 2),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                ),
+                onPressed: () {
                   _markers.clear();
-                  _markers.add(
-                    Marker(
-                      markerId: MarkerId(position.toString()),
-                      position: position,
-                    ),
-                  );
-                  _selectedLocation = position;
-                });
-              },
+                  _getCurrentLocation();
+                },
+                child: Text('ตำแหน่งปัจจุบัน', style: TextStyle(fontSize: 20)),
+              ),
             ),
           ),
-          SizedBox(
-            width: 300,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  // กำหนดรูปร่างของปุ่ม
-                  side: BorderSide(
-                      color: Colors.black87, width: 2), // กำหนดเส้นขอบของปุ่ม
-                  borderRadius: BorderRadius.circular(
-                      0), // กำหนดรัศมีของมุมเป็น 0 จะทำให้มีรูปร่างเป็นสี่เหลี่ยม
+
+          // ปุ่มเพิ่มที่อยู่ใหม่
+          Positioned(
+            bottom: 20, // วางปุ่มที่ด้านล่างสุด
+            left: 50,
+            right: 50,
+            child: SizedBox(
+              width: 300,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.black87, width: 2),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
                 ),
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
+                onPressed: () {
+                  Navigator.pop(context, _selectedLocation);
+                },
+                child: Text('เพิ่มที่อยู่ใหม่', style: TextStyle(fontSize: 20)),
               ),
-              onPressed: () {
-                _markers.clear();
-                _getCurrentLocation();
-              },
-              child: Text('ตำแหน่งปัจจุบัน', style: TextStyle(fontSize: 20)),
-            ),
-          ),
-          SizedBox(
-            width: 300,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  // กำหนดรูปร่างของปุ่ม
-                  side: BorderSide(
-                      color: Colors.black87, width: 2), // กำหนดเส้นขอบของปุ่ม
-                  borderRadius: BorderRadius.circular(
-                      0), // กำหนดรัศมีของมุมเป็น 0 จะทำให้มีรูปร่างเป็นสี่เหลี่ยม
-                ),
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.pop(context, _selectedLocation);
-              },
-              child: Text('เพิ่มที่อยู่ใหม่', style: TextStyle(fontSize: 20)),
             ),
           ),
         ],

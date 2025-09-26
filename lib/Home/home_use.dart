@@ -1,9 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_appshop1/Home/myhomepage.dart';
 import 'package:flutter_appshop1/Home/register.dart';
 import 'package:flutter_appshop1/Home/welcomehome.dart';
+import 'package:flutter_appshop1/Home/welcomehomeadmin.dart';
 import 'package:flutter_appshop1/Pagesuse/ResetPassword/Re_pw_pages.dart';
 import 'package:flutter_appshop1/model/profilemember.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,18 +23,6 @@ class _Home1State extends State<Home1> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>(); //ตัวชี้คำสั่ง
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  //final GoogleSignIn googleSignIn = GoogleSignIn();
-
-  Future<void> _signOut(BuildContext context) async {
-    await _auth.signOut();
-    //await googleSignIn.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => Home1()),
-    );
-  }
-
   Profile profile = Profile(
       //กดหนดเก็บค่า
       Name: '',
@@ -43,8 +34,8 @@ class _Home1State extends State<Home1> {
       Address: '',
       Image: '');
 
-  final TextEditingController _Email = TextEditingController();
-  final TextEditingController _Password = TextEditingController();
+  final TextEditingController emailcontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
 
   bool _passwordVisible = false;
 
@@ -55,14 +46,14 @@ class _Home1State extends State<Home1> {
   }
 
   @override
-  Widget build(BuildContext) {
+  Widget build(context) {
     return FutureBuilder(
         future: firebase,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Scaffold(
               appBar: AppBar(
-                title: Text("ไม่ได้"),
+                title: const Text("ไม่ได้"),
               ),
               body: Center(
                 child: Text("${snapshot.error}"),
@@ -77,7 +68,7 @@ class _Home1State extends State<Home1> {
                 // รูปร่างทั้งหมด
                 key: formKey, // คำสั่งFormKey
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/number1.jpg'),
                       fit: BoxFit.cover,
@@ -89,19 +80,6 @@ class _Home1State extends State<Home1> {
                       children: [
                         const SizedBox(
                           height: 25,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 0, 350, 0),
-                          child: IconButton(
-                            icon: Icon(Icons.arrow_back),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Myhomepage_m()),
-                              );
-                            },
-                          ),
                         ),
                         const SizedBox(
                           height: 125,
@@ -117,21 +95,21 @@ class _Home1State extends State<Home1> {
                         SizedBox(
                           width: 350,
                           child: TextFormField(
-                              controller: _Email,
-                              decoration: InputDecoration(
+                              controller: emailcontroller,
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.black),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.black),
                                   ),
-                                  labelText: 'อีเมลผู้ใช้งาน'),
+                                  labelText: 'อีเมล'),
                               validator: MultiValidator([
                                 RequiredValidator(
                                     errorText: "กรุณากรอก อีเมลผู้ใช้งาน"),
                                 EmailValidator(
                                     errorText: "รูปแบบอีเมลไม่ถูกต้อง")
-                              ])),
+                              ]).call),
                         ),
                         const SizedBox(
                           height: 20,
@@ -139,7 +117,7 @@ class _Home1State extends State<Home1> {
                         SizedBox(
                           width: 350,
                           child: TextFormField(
-                            controller: _Password,
+                            controller: passwordcontroller,
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
                                 suffixIcon: IconButton(
@@ -150,10 +128,10 @@ class _Home1State extends State<Home1> {
                                   ),
                                   onPressed: _togglePasswordVisibility,
                                 ),
-                                border: OutlineInputBorder(
+                                border: const OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
                                 labelText: 'รหัสผ่าน'),
@@ -174,51 +152,88 @@ class _Home1State extends State<Home1> {
                           //คำสั่งในกล่องข้อความ
                           child: ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
-                              side: BorderSide(color: Colors.black87, width: 2),
+                              side: const BorderSide(
+                                  color: Colors.black87, width: 2),
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.black,
                             ),
-                            icon: Icon(Icons.login),
-                            label: Text("เข้าสู่ระบบ",
+                            icon: const Icon(Icons.login),
+                            label: const Text("เข้าสู่ระบบ",
                                 style: TextStyle(fontSize: 20)),
                             onPressed: () async {
-                              //คำสั่งสามารถกดได้
-                              final String email = _Email.text;
-                              final String password = _Password.text;
+                              final String email = emailcontroller.text;
+                              final String password = passwordcontroller.text;
+
                               if (formKey.currentState!.validate()) {
                                 formKey.currentState!
-                                    .save(); // เซฟข้อมูลผู้ใช้งาน
+                                    .save(); // Save the user's information
                                 try {
-                                  UserCredential userCredential =
-                                      await FirebaseAuth
-                                          .instance
-                                          .signInWithEmailAndPassword(
-                                              email: email, password: password);
-                                  formKey.currentState!.reset();
-                                  Fluttertoast.showToast(
-                                      msg: "เข้าสู่ระบบแล้ว",
-                                      gravity: ToastGravity.BOTTOM);
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (context) => Welcomehome(),
-                                    ),
-                                  ); //เข้าสู่หน้าหลักแอพ
+                                  // Retrieve the admin login credentials from Firestore
+                                  DocumentSnapshot adminSnapshot =
+                                      await FirebaseFirestore.instance
+                                          .collection(
+                                              'admin') // The 'admin' collection
+                                          .doc('adminLogin') // The document ID
+                                          .get();
+
+                                  // Get the email and password from the document
+                                  String adminEmail =
+                                      adminSnapshot['adminEmail'];
+                                  String adminPassword =
+                                      adminSnapshot['adminPassword'];
+
+                                  // Check if the input credentials match the admin credentials
+                                  if (email == adminEmail &&
+                                      password == adminPassword) {
+                                    if (mounted) {
+                                      // Ensure the widget is still mounted before pushing the new route
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Welcomehomeadmin(), // Replace with your admin home page
+                                        ),
+                                      );
+                                    }
+                                    Fluttertoast.showToast(
+                                      msg: "เข้าสู่ระบบสำเร็จแล้ว",
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+                                  } else {
+                                    await FirebaseAuth.instance
+                                        .signInWithEmailAndPassword(
+                                            email: email, password: password);
+                                    if (mounted) {
+                                      // Ensure the widget is still mounted before pushing the new route
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Welcomehome(), // User home page
+                                        ),
+                                      );
+                                    }
+                                    Fluttertoast.showToast(
+                                      msg: "เข้าสู่ระบบสำเร็จแล้ว",
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+                                  }
                                 } on FirebaseAuthException catch (e) {
-                                  print(e.code);
+                                  if (kDebugMode) {
+                                    print(e.code);
+                                  }
                                   String? message;
-                                  if (e.code == 'invalid-credential') {
+                                  if (e.code == 'ไม่พบสมาชิกผู้ใช้งาน') {
                                     message =
                                         "ไม่พบสมาชิกผู้ใช้งาน กรุณาลองอีกครั้ง";
                                   } else {
                                     message = e.message;
                                   }
                                   Fluttertoast.showToast(
-                                      msg: message!,
-                                      gravity: ToastGravity.BOTTOM);
-                                  //คำสั่งแสดงข้อความเวลาเขียนผิดรูปแบบ
+                                    msg: message!,
+                                    gravity: ToastGravity.BOTTOM,
+                                  );
                                 }
-                                _Email.text = '';
-                                _Password.text = '';
+                                emailcontroller.text = '';
+                                passwordcontroller.text = '';
                               }
                             },
                           ),
@@ -229,11 +244,11 @@ class _Home1State extends State<Home1> {
                         const SizedBox(
                           height: 5,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         TextButton(
-                          child: Text('สมัครสมาชิก',
+                          child: const Text('สมัครสมาชิก',
                               style: TextStyle(fontSize: 18)),
                           onPressed: () {
                             Navigator.push(context,
@@ -243,7 +258,7 @@ class _Home1State extends State<Home1> {
                           },
                         ),
                         TextButton(
-                          child: Text('รีเซ็ตรหัสผ่าน',
+                          child: const Text('รีเซ็ตรหัสผ่าน',
                               style: TextStyle(fontSize: 18)),
                           onPressed: () {
                             Navigator.push(context,
@@ -259,7 +274,7 @@ class _Home1State extends State<Home1> {
               ),
             );
           }
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

@@ -159,7 +159,7 @@ class _Home_vState extends State<Home_v> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/number1.jpg'),
+            image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
           ),
         ),

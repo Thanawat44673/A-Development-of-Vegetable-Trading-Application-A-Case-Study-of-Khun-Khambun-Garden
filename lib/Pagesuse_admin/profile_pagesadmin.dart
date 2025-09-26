@@ -142,9 +142,25 @@ class _Profile_aState extends State<Profile_a> {
   }
 
   Future<void> _delete(String ProductID) async {
-    FirebaseAuth.instance.currentUser!.delete();
-    await FirebaseAuth.instance.signOut();
-    FirebaseFirestore.instance.collection("members").doc(ProductID).delete();
+    try {
+      // ลบเอกสารใน Firestore
+      await FirebaseFirestore.instance
+          .collection("members")
+          .doc(ProductID)
+          .delete();
+      print("Document with ID $ProductID has been deleted from Firestore.");
+
+      // ลบผู้ใช้จาก Firebase Authentication
+      User? user = FirebaseAuth.instance.currentUser; // ผู้ใช้ปัจจุบัน
+      if (user != null) {
+        await user.delete(); // ลบผู้ใช้
+        print("User account has been deleted.");
+      } else {
+        print("No user is logged in.");
+      }
+    } catch (e) {
+      print("Error deleting user or document: $e");
+    }
   }
 
   @override
@@ -156,7 +172,7 @@ class _Profile_aState extends State<Profile_a> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/number1.jpg'), // Replace this with your image asset
+                'assets/backgroud2.jpg'), // Replace this with your image asset
             fit: BoxFit.cover,
           ),
         ),

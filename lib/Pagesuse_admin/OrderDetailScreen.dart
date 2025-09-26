@@ -27,11 +27,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/number1.jpg'), // Replace this with your image asset
+                'assets/backgroud2.jpg'), // Replace this with your image asset
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
+        child: ListView(
           children: [
             FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
@@ -65,7 +65,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 300,
+                        height: 375,
                         width: 350,
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black, width: 2.5),

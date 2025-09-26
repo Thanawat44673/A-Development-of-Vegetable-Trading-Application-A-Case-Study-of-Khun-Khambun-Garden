@@ -89,8 +89,7 @@ class _Editcontace_adminState extends State<Editcontace_admin> {
               //alignment: Alignment.center,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                      'assets/number1.jpg'), // Replace this with your image asset
+                  image: AssetImage('assets/backgroud2.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),

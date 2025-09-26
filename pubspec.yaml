@@ -47,7 +47,7 @@ dependencies:
   get: ^4.6.6
   image_picker: ^1.0.7
   firebase_storage: ^12.1.1
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.3.2
   cached_network_image: ^3.3.1
   carousel_slider: ^4.2.1
   firebase_messaging: ^15.0.3
@@ -62,6 +62,7 @@ dependencies:
   google_maps_flutter: ^2.7.0
   fl_chart: ^0.68.0
   table_calendar: ^3.1.2
+  googleapis_auth: ^1.6.0
 
 
 
@@ -81,21 +82,27 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/number1.jpg
+    - assets/number12.jpg
+    - assets/number2.jpg
+    - assets/backgroud2.jpg
     - assets/google.jpg
     - assets/facebook.jpg
     - assets/vegetable1.jpg
     - assets/vegetable2.jpg
     - assets/vegetable3.jpg
     - assets/vegetable4.jpg
+    - assets/keys/serviceAccountKey.json
+
+  fonts:
+    - family: Sarabun
+      fonts:
+        - asset: assets/fonts/Sarabun-Regular.ttf
+        - asset: assets/fonts/Sarabun-Bold.ttf
+          weight: 700
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

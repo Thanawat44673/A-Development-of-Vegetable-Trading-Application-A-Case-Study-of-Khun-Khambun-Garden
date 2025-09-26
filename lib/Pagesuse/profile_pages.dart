@@ -6,13 +6,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_appshop1/Home/Map_Screen.dart';
-import 'package:flutter_appshop1/Home/myhomepage.dart';
+import 'package:flutter_appshop1/Home/home_use.dart';
 import 'package:flutter_appshop1/Pagesuse/Profile_edit/Profile_edit_map.dart';
 import 'package:flutter_appshop1/auth/text_box.dart';
 import 'package:flutter_appshop1/model/profilemember.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Profile_v extends StatefulWidget {
@@ -33,7 +31,7 @@ class _Profile_vState extends State<Profile_v> {
     await _auth.signOut();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Myhomepage_m()),
+      MaterialPageRoute(builder: (context) => Home1()),
     );
   }
 
@@ -238,7 +236,7 @@ class _Profile_vState extends State<Profile_v> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                      'assets/number1.jpg'), // Replace this with your image asset
+                      'assets/backgroud2.jpg'), // Replace this with your image asset
                   fit: BoxFit.cover,
                 ),
               ),
@@ -358,8 +356,13 @@ class _Profile_vState extends State<Profile_v> {
                                   ),
                                   TextButton(
                                     onPressed: () async {
-                                      //await GoogleSignIn().signOut();
                                       await _signOut(context);
+                                      Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              Home1(), // Replace with your admin home page
+                                        ),
+                                      );
                                     },
                                     child: Text('ยืนยัน',
                                         style: TextStyle(
@@ -375,58 +378,6 @@ class _Profile_vState extends State<Profile_v> {
                       ),
                     ),
                   ),
-                  /*Padding(
-                    padding: EdgeInsets.only(left: 200),
-                    child: TextButton(
-                      child: Text(
-                        'ลบบัญชี',
-                        selectionColor: Colors.red,
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('ยืนยันการลบบัญชี',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              content: Text('คุณต้องการที่จะลบบัญชีหรือไม่?',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    // ปิดกล่องโต้ตอบ
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('ยกเลิก',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    _delete();
-                                  },
-                                  child: Text('ยืนยัน',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      )),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),*/
                 ],
               ),
             );

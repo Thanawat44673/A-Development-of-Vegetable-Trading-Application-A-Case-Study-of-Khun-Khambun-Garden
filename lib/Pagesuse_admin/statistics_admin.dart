@@ -48,7 +48,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/number1.jpg'),
+            image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
           ),
         ),
@@ -87,7 +87,6 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
             double weeklyIncome = 0;
             double monthlyIncome = 0;
 
-            // Calculate weekly income
             for (var i = 0; i < 7; i++) {
               var currentDate = startOfWeek.add(Duration(days: i));
               var normalizedCurrentDate = _normalizeDate(currentDate);
@@ -96,7 +95,6 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
               }
             }
 
-            // Calculate monthly income
             for (var i = 0; i < endOfMonth.day; i++) {
               var currentDate = startOfMonth.add(Duration(days: i));
               var normalizedCurrentDate = _normalizeDate(currentDate);
@@ -155,12 +153,11 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                     ),
                   ),
                   headerStyle: HeaderStyle(
-                    formatButtonVisible: false, // Hide the format button
+                    formatButtonVisible: false,
                     titleCentered: true,
                     titleTextFormatter: (date, locale) {
-                      return DateFormat('MMMM y', 'th_TH').format(date.add(
-                          Duration(
-                              days: 198326))); // Adjust year to Buddhist year
+                      return DateFormat('MMMM y', 'th_TH')
+                          .format(date.add(Duration(days: 198326)));
                     },
                   ),
                 ),

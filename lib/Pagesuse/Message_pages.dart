@@ -41,7 +41,7 @@ class _Message_pState extends State<Message_p> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/number1.jpg'), // Replace this with your image asset
+                'assets/backgroud2.jpg'), // Replace this with your image asset
             fit: BoxFit.cover,
           ),
         ),
@@ -89,62 +89,67 @@ class _Message_pState extends State<Message_p> {
                       builder: (context,
                           AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                         if (streamSnapshot.hasData) {
+                          // Sorting the documents based on 'เวลาสร้าง' in descending order
+                          List<DocumentSnapshot> documents =
+                              streamSnapshot.data!.docs;
+                          documents.sort((a, b) {
+                            DateTime dateA = a['เวลาสร้าง'].toDate();
+                            DateTime dateB = b['เวลาสร้าง'].toDate();
+                            return dateB.compareTo(dateA); // Sort descending
+                          });
+
                           return ListView.builder(
-                              shrinkWrap: true,
-                              key: formKey,
-                              itemCount: streamSnapshot.data!.docs.length,
-                              itemBuilder: (context, index) {
-                                DocumentSnapshot document =
-                                    streamSnapshot.data!.docs[index];
-                                final DocumentSnapshot documentSnapshot =
-                                    streamSnapshot.data!.docs[index];
-                                return GestureDetector(
-                                  onTap: () {
-                                    _openMessage_datailsPage(context, document);
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween, // จัดแถวตรงกลาง
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            documentSnapshot['หัวเรื่อง']
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black),
+                            shrinkWrap: true,
+                            key: formKey,
+                            itemCount: documents.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot document = documents[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  _openMessage_datailsPage(context, document);
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          document['หัวเรื่อง'].toString(),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 35,
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(),
-                                          child: Center(
-                                            child: Text(
-                                              DateFormat(
-                                                      '                 dd/MM/yyyy')
-                                                  .format(documentSnapshot[
-                                                          'เวลาสร้าง']
-                                                      .toDate()
-                                                      .add(Duration(
-                                                          days: 198326))),
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
+                                    ),
+                                    SizedBox(height: 35),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(),
+                                        child: Center(
+                                          child: Text(
+                                            DateFormat(
+                                                    '                 dd/MM/yyyy')
+                                                .format(
+                                              document['เวลาสร้าง']
+                                                  .toDate()
+                                                  .add(Duration(days: 198326)),
+                                            ),
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                );
-                              });
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         }
                         return const Center(
                           child: CircularProgressIndicator(),
