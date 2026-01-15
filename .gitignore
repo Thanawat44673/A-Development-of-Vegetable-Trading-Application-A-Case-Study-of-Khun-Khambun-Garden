@@ -49,3 +49,4 @@ ios/Runner/GoogleService-Info.plist
 firebase-debug.log
 assets/keys/
 
+.env
