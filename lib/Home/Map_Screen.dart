@@ -16,8 +16,8 @@ class _MapScreenState extends State<MapScreen> {
   LatLng? _selectedLocation;
   Set<Marker> _markers = {};
   List<dynamic> _placeSuggestions = [];
-  final String _googleApiKey =
-      'AIzaSyBvXm0136Sg3qIU7Uw1t_8Ro6o8UK-cOhQ'; // ใส่ API Key ของคุณที่นี่
+  static const String _googleApiKey =
+      String.fromEnvironment('GOOGLE_MAPS_API_KEY');
 
   @override
   void initState() {

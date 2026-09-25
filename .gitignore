@@ -50,3 +50,6 @@ firebase-debug.log
 assets/keys/
 
 .env
+.env.*
+!.env.example
+android/local.properties

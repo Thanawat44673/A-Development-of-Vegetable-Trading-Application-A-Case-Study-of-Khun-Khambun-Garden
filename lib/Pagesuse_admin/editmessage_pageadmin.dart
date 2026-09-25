@@ -1,16 +1,13 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_appshop1/Pagesuse_admin/edit_pageadmin/Promotion_history_admin.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:googleapis_auth/auth_io.dart';
 
 class Editmessage_admin extends StatefulWidget {
   const Editmessage_admin({Key? key}) : super(key: key);
@@ -51,84 +48,6 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
             message.notification?.title, message.notification?.body);
       }
     });
-  }
-
-  // Path to your service account JSON file
-  String serviceAccountPath = 'assets/keys/serviceAccountKey.json';
-  String projectId = 'myloginapplication-ff09a';
-
-// Emulator 5554 and 5556 tokens
-  String emulator5554Token =
-      'dPSbbV1_RmmP4go3Hj1BGP:APA91bFkTn_dIofiXe7UIGyW7VIqn3IhVKDOBUUrXk-fuYOq8Ui0uehk0EG5FedwUGM1ToeAy716Okh7z3K8ZVgZCdCBmfMDg2nxP3IwyTUVlvl_geA-NIqZRi9Ozqjp9lR4fwAc07QI';
-  String emulator5556Token =
-      'dPSbbV1_RmmP4go3Hj1BGP:APA91bFkTn_dIofiXe7UIGyW7VIqn3IhVKDOBUUrXk-fuYOq8Ui0uehk0EG5FedwUGM1ToeAy716Okh7z3K8ZVgZCdCBmfMDg2nxP3IwyTUVlvl_geA-NIqZRi9Ozqjp9lR4fwAc07QI';
-
-  Future<void> _sendNotificationToEmulators(String title, String body) async {
-    // Load the service account key
-    String serviceAccountContent =
-        await rootBundle.loadString(serviceAccountPath);
-    var accountJson = jsonDecode(serviceAccountContent);
-
-    // Scopes for Firebase Messaging
-    var scopes = ['https://www.googleapis.com/auth/firebase.messaging'];
-
-    // Service account credentials
-    var credentials = ServiceAccountCredentials.fromJson(accountJson);
-    var client = await clientViaServiceAccount(credentials, scopes);
-
-    // Define the Firebase Cloud Messaging API URL
-    var url = Uri.parse(
-        'https://fcm.googleapis.com/v1/projects/$projectId/messages:send');
-
-    // Create the message payload for emulator 5554
-    var messageFor5554 = {
-      "message": {
-        "token": emulator5554Token,
-        "notification": {
-          "title": title,
-          "body": body,
-        },
-      },
-    };
-
-    // Create the message payload for emulator 5556
-    var messageFor5556 = {
-      "message": {
-        "token": emulator5556Token,
-        "notification": {
-          "title": title,
-          "body": body,
-        },
-      },
-    };
-
-    // Send notification to emulator 5554
-    var response5554 = await client.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(messageFor5554),
-    );
-
-    if (response5554.statusCode == 200) {
-      print('Notification sent to emulator 5554 successfully');
-    } else {
-      print(
-          'Failed to send notification to emulator 5554: ${response5554.body}');
-    }
-
-    // Send notification to emulator 5556
-    var response5556 = await client.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(messageFor5556),
-    );
-
-    if (response5556.statusCode == 200) {
-      print('Notification sent to emulator 5556 successfully');
-    } else {
-      print(
-          'Failed to send notification to emulator 5556: ${response5556.body}');
-    }
   }
 
   void _initializeLocalNotifications() {
@@ -174,8 +93,13 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      // ส่งการแจ้งเตือนไปยังทุกอุปกรณ์ที่สมัครสมาชิกหัวข้อ 'allDevices'
-      _sendNotificationToEmulators(_textTitle.text, _textBody.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'กรุณาตั้งค่า Firebase Cloud Function สำหรับส่งการแจ้งเตือน',
+          ),
+        ),
+      );
     }
   }
 

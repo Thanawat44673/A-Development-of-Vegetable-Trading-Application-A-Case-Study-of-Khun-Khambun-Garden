@@ -62,7 +62,6 @@ dependencies:
   google_maps_flutter: ^2.7.0
   fl_chart: ^0.68.0
   table_calendar: ^3.1.2
-  googleapis_auth: ^1.6.0
 
 
 
@@ -94,7 +93,6 @@ flutter:
     - assets/vegetable2.jpg
     - assets/vegetable3.jpg
     - assets/vegetable4.jpg
-    - assets/keys/serviceAccountKey.json
 
   fonts:
     - family: Sarabun
