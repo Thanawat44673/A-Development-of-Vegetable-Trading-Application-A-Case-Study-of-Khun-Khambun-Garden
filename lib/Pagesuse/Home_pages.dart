@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +14,7 @@ class Home_v extends StatefulWidget {
 
 class _Home_vState extends State<Home_v> {
   final currentUser = FirebaseAuth.instance.currentUser!;
-  final CarouselController _controller = CarouselController();
+  // final CarouselController _controller = CarouselController();
 
   List _products = [];
   var _firestoreInstance = FirebaseFirestore.instance;

@@ -70,7 +70,7 @@ class _Home1State extends State<Home1> {
                 child: Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/number1.jpg'),
+                      image: AssetImage('assets/number12.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),

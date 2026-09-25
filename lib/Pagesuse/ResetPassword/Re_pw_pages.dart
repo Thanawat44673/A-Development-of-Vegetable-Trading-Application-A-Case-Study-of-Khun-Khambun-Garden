@@ -58,7 +58,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/number1.jpg'),
+            image: AssetImage('assets/number12.jpg'),
             fit: BoxFit.cover,
           ),
         ),
