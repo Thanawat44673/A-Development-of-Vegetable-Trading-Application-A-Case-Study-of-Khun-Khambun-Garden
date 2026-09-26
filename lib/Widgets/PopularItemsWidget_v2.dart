@@ -8,6 +8,8 @@ import 'package:flutter_appshop1/Pagesuse/datails/details4.dart';
 class PopularItemsWidget_v2 extends StatelessWidget {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
+  PopularItemsWidget_v2({super.key});
+
   double? _getPercentageDiscount1(Map<String, dynamic> data) {
     if (data.containsKey('percentage_discount')) {
       return data['percentage_discount'];
@@ -96,7 +98,7 @@ class PopularItemsWidget_v2 extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Padding(
-        padding: EdgeInsets.symmetric(),
+        padding: const EdgeInsets.symmetric(),
         child: Row(
           children: [
             StreamBuilder<DocumentSnapshot>(
@@ -129,18 +131,18 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                         );
                       },
                       child: Padding(
-                        padding: EdgeInsets.symmetric(),
+                        padding: const EdgeInsets.symmetric(),
                         child: Row(
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.symmetric(),
+                              padding: const EdgeInsets.symmetric(),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Stack(
                                     children: [
                                       Card(
-                                        child: Container(
+                                        child: SizedBox(
                                           height: 260,
                                           width: 150,
                                           child: Column(
@@ -159,7 +161,7 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                               ),
                                               Text(
                                                 userData['ชื่อผัก'],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16),
                                               ),
@@ -227,7 +229,7 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                                       color: Colors.red,
                                                       fontSize: 16),
                                                 ),
-                                              Text(
+                                              const Text(
                                                 'สินค้าคงเหลือ',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
@@ -236,7 +238,7 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                               ),
                                               Text(
                                                 '${userData['จำนวนผัก']} แพ็ค',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16,
                                                     color: Colors.red),
@@ -251,11 +253,11 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                           top: 8,
                                           right: 8,
                                           child: Container(
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
                                             color: Colors.red,
                                             child: Text(
                                               '${percentageDiscount.toStringAsFixed(0)}%',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -268,9 +270,9 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                           top: 8,
                                           right: 8,
                                           child: Container(
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
                                             color: Colors.red,
-                                            child: Text(
+                                            child: const Text(
                                               'ลดราคา',
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -286,9 +288,9 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                           top: 8,
                                           right: 8,
                                           child: Container(
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
                                             color: Colors.red,
-                                            child: Text(
+                                            child: const Text(
                                               '1 แถม 1',
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -347,18 +349,18 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                       },
                       child: Padding(
                         padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                            const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                         child: Row(
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Stack(
                                     children: [
                                       Card(
-                                        child: Container(
+                                        child: SizedBox(
                                           height: 260,
                                           width: 150,
                                           child: Column(
@@ -377,7 +379,7 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                               ),
                                               Text(
                                                 userData['ชื่อผัก'],
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16),
                                               ),
@@ -445,7 +447,7 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                                       color: Colors.red,
                                                       fontSize: 16),
                                                 ),
-                                              Text(
+                                              const Text(
                                                 'สินค้าคงเหลือ',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
@@ -454,7 +456,7 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                               ),
                                               Text(
                                                 '${userData['จำนวนผัก']} แพ็ค',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 16,
                                                     color: Colors.red),
@@ -469,11 +471,11 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                           top: 8,
                                           right: 8,
                                           child: Container(
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
                                             color: Colors.red,
                                             child: Text(
                                               '${percentageDiscount.toStringAsFixed(0)}%',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -486,9 +488,9 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                           top: 8,
                                           right: 8,
                                           child: Container(
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
                                             color: Colors.red,
-                                            child: Text(
+                                            child: const Text(
                                               'ลดราคา',
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -504,9 +506,9 @@ class PopularItemsWidget_v2 extends StatelessWidget {
                                           top: 8,
                                           right: 8,
                                           child: Container(
-                                            padding: EdgeInsets.all(4),
+                                            padding: const EdgeInsets.all(4),
                                             color: Colors.red,
-                                            child: Text(
+                                            child: const Text(
                                               '1 แถม 1',
                                               style: TextStyle(
                                                 color: Colors.white,

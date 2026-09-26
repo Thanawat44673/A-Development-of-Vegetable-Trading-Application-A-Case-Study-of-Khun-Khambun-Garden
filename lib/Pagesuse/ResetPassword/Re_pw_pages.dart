@@ -25,9 +25,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
+            return const AlertDialog(
               content: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
                 child: Text('ระบบได้ทำการส่งข้อมูลการรีเซ็ตรหัสผ่านของคุณแล้ว',
                     textAlign: TextAlign.center,
                     style:
@@ -56,7 +56,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       ),
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/number12.jpg'),
             fit: BoxFit.cover,
@@ -65,8 +65,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25.0),
               child: Text('กรุณากรอกอีเมลของคุณ เพื่อทำการรีเซ็ตรหัสผ่านของคุณ',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -78,7 +78,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               width: 350,
               child: TextFormField(
                   controller: _Email,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.black),
                       ),
@@ -89,7 +89,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   validator: MultiValidator([
                     RequiredValidator(errorText: "กรุณากรอก อีเมล"),
                     EmailValidator(errorText: "รูปแบบอีเมลไม่ถูกต้อง")
-                  ])),
+                  ]).call),
             ),
             const SizedBox(
               height: 20,
@@ -99,13 +99,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               height: 50,
               //คำสั่งในกล่องข้อความ
               child: ElevatedButton(
-                child: Text("รีเซ็ตรหัสผ่าน", style: TextStyle(fontSize: 20)),
                 style: ElevatedButton.styleFrom(
-                  side: BorderSide(color: Colors.black87, width: 2),
+                  side: const BorderSide(color: Colors.black87, width: 2),
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
                 ),
                 onPressed: passwordRest,
+                child: Text("รีเซ็ตรหัสผ่าน", style: TextStyle(fontSize: 20)),
               ),
             ),
             const SizedBox(

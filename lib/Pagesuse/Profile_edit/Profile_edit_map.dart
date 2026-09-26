@@ -20,7 +20,7 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
 
   GoogleMapController? _mapController;
   LatLng? _savedLocation;
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
   StreamSubscription<DocumentSnapshot>? _locationSubscription;
 
   @override
@@ -84,9 +84,9 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
       _markers.clear();
       _markers.add(
         Marker(
-          markerId: MarkerId('savedLocation'),
+          markerId: const MarkerId('savedLocation'),
           position: newLocation,
-          infoWindow: InfoWindow(title: 'Saved Location'),
+          infoWindow: const InfoWindow(title: 'Saved Location'),
         ),
       );
     });
@@ -112,13 +112,13 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("แก้ไข" + field),
+        title: Text("แก้ไข$field"),
         content: TextField(
           autocorrect: true,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             hintText: "กรอก $fieldใหม่",
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: const TextStyle(color: Colors.grey),
           ),
           onChanged: (value) {
             newValue = value;
@@ -127,14 +127,14 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'ยกเลิก',
               style: TextStyle(color: Colors.black),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(newValue),
-            child: Text(
+            child: const Text(
               'บันทึก',
               style: TextStyle(color: Colors.black),
             ),
@@ -143,7 +143,7 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
       ),
     );
     //คำสั่งอัพโหลดข้อมูลการแก้ไข
-    if (newValue.trim().length > 0) {
+    if (newValue.trim().isNotEmpty) {
       await usersCollection.doc(currentUser.email).update({field: newValue});
     }
   }
@@ -152,7 +152,7 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('แก้ไขที่อยู่'),
+        title: const Text('แก้ไขที่อยู่'),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       body: StreamBuilder<DocumentSnapshot>(
@@ -165,7 +165,7 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
             final userData = snapshot.data!.data() as Map<String, dynamic>;
 
             return Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
                       'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -182,7 +182,7 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
                   ),
                   const SizedBox(height: 50),
                   Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
+                    padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Container(
                       height: 400,
                       decoration: BoxDecoration(
@@ -200,7 +200,7 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
                         },
                         initialCameraPosition: CameraPosition(
                           target: _savedLocation ??
-                              LatLng(0, 0), // Default position
+                              const LatLng(0, 0), // Default position
                           zoom: 2,
                         ),
                         markers: _markers,
@@ -209,10 +209,10 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
                   ),
                   const SizedBox(height: 100),
                   Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40),
+                    padding: const EdgeInsets.only(left: 40, right: 40),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        side: BorderSide(color: Colors.black87, width: 2),
+                        side: const BorderSide(color: Colors.black87, width: 2),
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,
                       ),
@@ -238,7 +238,7 @@ class _Profile_edit_mapState extends State<Profile_edit_map> {
                           });
                         }
                       },
-                      child: Text('เพิ่มพิกัดใหม่ของท่าน',
+                      child: const Text('เพิ่มพิกัดใหม่ของท่าน',
                           style: TextStyle(fontSize: 20)),
                     ),
                   ),

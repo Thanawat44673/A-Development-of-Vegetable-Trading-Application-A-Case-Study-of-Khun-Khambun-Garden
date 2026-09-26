@@ -38,7 +38,7 @@ class _Message_pState extends State<Message_p> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -47,7 +47,7 @@ class _Message_pState extends State<Message_p> {
         ),
         child: ListView(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 20, left: 10, bottom: 15),
               child: Text(
                 "การแจ้งเตือน",
@@ -57,11 +57,11 @@ class _Message_pState extends State<Message_p> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 30, right: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: Container(
                 height: 600,
                 decoration: BoxDecoration(
@@ -74,7 +74,7 @@ class _Message_pState extends State<Message_p> {
                 ),
                 child: ListView(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 5, left: 10, bottom: 15),
                       child: Text(
                         "รายละเอียด                     วันที่",
@@ -114,7 +114,7 @@ class _Message_pState extends State<Message_p> {
                                   children: [
                                     Expanded(
                                       child: Padding(
-                                        padding: EdgeInsets.only(left: 10),
+                                        padding: const EdgeInsets.only(left: 10),
                                         child: Text(
                                           document['หัวเรื่อง'].toString(),
                                           style: const TextStyle(
@@ -124,10 +124,10 @@ class _Message_pState extends State<Message_p> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 35),
+                                    const SizedBox(height: 35),
                                     Expanded(
                                       child: Padding(
-                                        padding: EdgeInsets.only(),
+                                        padding: const EdgeInsets.only(),
                                         child: Center(
                                           child: Text(
                                             DateFormat(
@@ -135,9 +135,9 @@ class _Message_pState extends State<Message_p> {
                                                 .format(
                                               document['เวลาสร้าง']
                                                   .toDate()
-                                                  .add(Duration(days: 198326)),
+                                                  .add(const Duration(days: 198326)),
                                             ),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black,
                                             ),

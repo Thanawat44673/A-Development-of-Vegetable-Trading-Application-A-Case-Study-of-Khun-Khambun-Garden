@@ -6,7 +6,7 @@ import 'package:flutter_appshop1/Pagesuse/Details_of_ordering_products.dart';
 class CartScreen extends StatefulWidget {
   final User user;
 
-  CartScreen({required this.user});
+  const CartScreen({super.key, required this.user});
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -17,11 +17,11 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ตะกร้าสินค้า'),
+        title: const Text('ตะกร้าสินค้า'),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -35,7 +35,7 @@ class _CartScreenState extends State<CartScreen> {
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             final cartItems = snapshot.data!.docs;
 
@@ -51,20 +51,20 @@ class _CartScreenState extends State<CartScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.remove),
+                              icon: const Icon(Icons.remove),
                               onPressed: () {
                                 decrementQuantity(doc);
                               },
                             ),
                             Text(doc['quantity'].toString()),
                             IconButton(
-                              icon: Icon(Icons.add),
+                              icon: const Icon(Icons.add),
                               onPressed: () {
                                 incrementQuantity(doc);
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                               onPressed: () {
                                 deleteItem(doc);
                               },
@@ -79,15 +79,12 @@ class _CartScreenState extends State<CartScreen> {
                   width: double.infinity,
                   height: 75,
                   child: ElevatedButton(
-                    child: Text("สั่งซื้อสินค้า",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                             0), // ปรับเป็นค่าที่คุณต้องการ
                       ),
-                      side: BorderSide(color: Colors.red, width: 2),
+                      side: const BorderSide(color: Colors.red, width: 2),
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                     ),
@@ -100,6 +97,9 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       );
                     },
+                    child: Text("สั่งซื้อสินค้า",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ],
@@ -123,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
       doc.reference.update({'quantity': newQuantity});
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ไม่สามารถเพิ่มมากกว่าสต็อกที่มีอยู่')),
+        const SnackBar(content: Text('ไม่สามารถเพิ่มมากกว่าสต็อกที่มีอยู่')),
       );
     }
   }

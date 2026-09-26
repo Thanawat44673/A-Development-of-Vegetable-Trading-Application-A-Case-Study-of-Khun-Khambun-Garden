@@ -24,44 +24,44 @@ class _welcomehomeadminState extends State<Welcomehomeadmin> {
     await _auth.signOut();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Home1()),
+      MaterialPageRoute(builder: (context) => const Home1()),
     );
   }
 
   int visit = 2;
   List<TabItem> items = [
-    TabItem(
+    const TabItem(
       icon: Icons.circle_notifications,
       title: 'โปรโมชัน',
     ),
-    TabItem(
+    const TabItem(
       icon: Icons.call,
       title: 'ติดต่อ',
     ),
-    TabItem(
+    const TabItem(
       icon: Icons.spa_outlined,
       title: 'ข้อมูลผัก',
     ),
-    TabItem(
+    const TabItem(
       icon: Icons.assessment_outlined,
       title: 'สถิติรายได้',
     ),
-    TabItem(
+    const TabItem(
       icon: Icons.people,
       title: 'ข้อมูลสมาชิก',
     ),
-    TabItem(
+    const TabItem(
       icon: Icons.local_grocery_store_outlined,
       title: 'ออเดอร์',
     ),
   ];
 
   List<Widget> pages = [
-    Editmessage_admin(),
-    Editcontace_admin(),
+    const Editmessage_admin(),
+    const Editcontace_admin(),
     Editvegetable_admin(),
-    StatisticsAdmin(),
-    Profile_a(),
+    const StatisticsAdmin(),
+    const Profile_a(),
     OrderManagementScreen(),
   ];
   @override
@@ -70,7 +70,7 @@ class _welcomehomeadminState extends State<Welcomehomeadmin> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
         automaticallyImplyLeading: false,
-        title: Text("สวนคุณคำบุญ"),
+        title: const Text("สวนคุณคำบุญ"),
         actions: [
           IconButton(
               onPressed: () async {
@@ -78,7 +78,7 @@ class _welcomehomeadminState extends State<Welcomehomeadmin> {
                 await FirebaseAuth.instance.signOut();
                 await _signOut(context);
               },
-              icon: Icon(Icons.power_settings_new))
+              icon: const Icon(Icons.power_settings_new))
         ],
       ),
       body: pages[visit],
@@ -90,8 +90,8 @@ class _welcomehomeadminState extends State<Welcomehomeadmin> {
         itemStyle: ItemStyle.circle,
         borderRadius: BorderRadius.circular(0),
         elevation: 6,
-        chipStyle: ChipStyle(
-          background: const Color.fromARGB(255, 170, 251, 173),
+        chipStyle: const ChipStyle(
+          background: Color.fromARGB(255, 170, 251, 173),
           notchSmoothness: NotchSmoothness.verySmoothEdge,
         ),
         indexSelected: visit,

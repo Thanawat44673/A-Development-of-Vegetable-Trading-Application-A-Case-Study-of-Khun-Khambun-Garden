@@ -25,9 +25,9 @@ class _mainwelcomeState extends State<Welcomehome> {
   List pages = [
     Home_v(),
     UserOrdersScreen(),
-    Contact_p(),
-    Message_p(),
-    Profile_v(),
+    const Contact_p(),
+    const Message_p(),
+    const Profile_v(),
   ];
 
   @override
@@ -38,9 +38,9 @@ class _mainwelcomeState extends State<Welcomehome> {
         tabBackgroundColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
         gap: 8,
-        padding: EdgeInsets.all(17),
+        padding: const EdgeInsets.all(17),
         onTabChange: (index) => goToPage(index),
-        tabs: [
+        tabs: const [
           GButton(
             icon: Icons.home,
             text: 'หน้าหลัก',

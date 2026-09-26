@@ -21,6 +21,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return MaterialApp(
+          return const MaterialApp(
             home: Scaffold(
               body: Center(child: CircularProgressIndicator()),
             ),
@@ -42,14 +44,14 @@ class MyApp extends StatelessWidget {
           );
         } else {
           return MaterialApp(
-            localizationsDelegates: [
+            localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: [
-              const Locale('th', 'TH'),
-              const Locale('en', 'US'),
+            supportedLocales: const [
+              Locale('th', 'TH'),
+              Locale('en', 'US'),
             ],
             debugShowCheckedModeBanner: false,
             title: 'Myproject',
@@ -68,7 +70,7 @@ class MyApp extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.active) {
                   User? user = snapshot.data;
                   if (user == null) {
-                    return Home1();
+                    return const Home1();
                   } else {
                     return FutureBuilder<DocumentSnapshot>(
                       future: FirebaseFirestore.instance
@@ -78,7 +80,7 @@ class MyApp extends StatelessWidget {
                       builder: (context, adminSnapshot) {
                         if (adminSnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return const Center(child: CircularProgressIndicator());
                         }
 
                         if (adminSnapshot.hasError) {
@@ -88,30 +90,30 @@ class MyApp extends StatelessWidget {
 
                         if (!adminSnapshot.hasData ||
                             adminSnapshot.data?.data() == null) {
-                          return Center(child: Text('Admin data not found'));
+                          return const Center(child: Text('Admin data not found'));
                         }
 
                         var adminData =
                             adminSnapshot.data?.data() as Map<String, dynamic>?;
 
                         if (adminData == null) {
-                          return Center(child: Text('Admin data is null'));
+                          return const Center(child: Text('Admin data is null'));
                         }
 
                         print('User email: ${user.email}');
                         print('Admin email: ${adminData['adminEmail']}');
 
                         if (user.email == adminData['adminEmail']) {
-                          return Welcomehomeadmin(); // Redirect to Admin Home
+                          return const Welcomehomeadmin(); // Redirect to Admin Home
                         }
 
-                        return Welcomehome(); // Regular user home screen
+                        return const Welcomehome(); // Regular user home screen
                       },
                     );
                   }
                 }
 
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               },
             ),
           );

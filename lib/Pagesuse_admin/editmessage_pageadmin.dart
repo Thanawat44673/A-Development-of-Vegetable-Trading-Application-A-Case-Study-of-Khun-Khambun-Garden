@@ -10,7 +10,7 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class Editmessage_admin extends StatefulWidget {
-  const Editmessage_admin({Key? key}) : super(key: key);
+  const Editmessage_admin({super.key});
 
   @override
   State<Editmessage_admin> createState() => _Editmessage_adminState();
@@ -141,7 +141,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
@@ -154,7 +154,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(bottom: 100, left: 25, right: 25),
+                    padding: const EdgeInsets.only(bottom: 100, left: 25, right: 25),
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -164,7 +164,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                           ),
                           child: TextFormField(
                             controller: _textTitle,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -191,7 +191,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                           ),
                           child: TextFormField(
                             controller: _textBody,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -217,7 +217,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                             var products = snapshot.data!.docs;
                             return Container(
@@ -226,16 +226,16 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: DropdownButtonFormField<String>(
-                                value: _selectedProduct,
-                                hint: Text('เลือกสินค้าผัก'),
+                                initialValue: _selectedProduct,
+                                hint: const Text('เลือกสินค้าผัก'),
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: Colors.black, width: 3.5),
                                     borderRadius: BorderRadius.circular(4),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: Colors.black, width: 3.5),
                                     borderRadius: BorderRadius.circular(4),
                                   ),
@@ -270,21 +270,21 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: DropdownButtonFormField<String>(
-                            value: _selectedPromotionType,
-                            hint: Text('เลือกประเภทโปรโมชั่น'),
+                            initialValue: _selectedPromotionType,
+                            hint: const Text('เลือกประเภทโปรโมชั่น'),
                             decoration: InputDecoration(
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.black, width: 3.5),
+                                    const BorderSide(color: Colors.black, width: 3.5),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.black, width: 3.5),
+                                    const BorderSide(color: Colors.black, width: 3.5),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                             ),
-                            items: [
+                            items: const [
                               DropdownMenuItem<String>(
                                 value: 'discount',
                                 child: Text('ลดราคาแบบจำนวนเต็ม'),
@@ -321,7 +321,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                             ),
                             child: TextFormField(
                               controller: _priceController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -351,7 +351,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                             ),
                             child: TextFormField(
                               controller: _percentageController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -376,7 +376,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                             ),
                           ),
                         ],
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
@@ -385,15 +385,15 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                               child: Text(
                                 _startDateTime == null
                                     ? 'เลือกวันและเวลาเริ่มต้น'
-                                    : 'เริ่ม: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_startDateTime!.add(Duration(days: 198326)))}',
-                                style: TextStyle(
+                                    : 'เริ่ม: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_startDateTime!.add(const Duration(days: 198326)))}',
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.calendar_today),
+                              icon: const Icon(Icons.calendar_today),
                               onPressed: () async {
                                 DateTime? pickedDate = await showDatePicker(
                                   context: context,
@@ -405,25 +405,23 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                                 if (pickedDate != null) {
                                   TimeOfDay pickedTime =
                                       await _selectTime(context);
-                                  if (pickedTime != null) {
-                                    setState(() {
-                                      // Display in Thai Buddhist year
-                                      _startDateTime = tz.TZDateTime(
-                                        tz.getLocation('Asia/Bangkok'),
-                                        pickedDate.year,
-                                        pickedDate.month,
-                                        pickedDate.day,
-                                        pickedTime.hour,
-                                        pickedTime.minute,
-                                      );
-                                    });
-                                  }
-                                }
+                                  setState(() {
+                                    // Display in Thai Buddhist year
+                                    _startDateTime = tz.TZDateTime(
+                                      tz.getLocation('Asia/Bangkok'),
+                                      pickedDate.year,
+                                      pickedDate.month,
+                                      pickedDate.day,
+                                      pickedTime.hour,
+                                      pickedTime.minute,
+                                    );
+                                  });
+                                                                }
                               },
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
@@ -432,15 +430,15 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                               child: Text(
                                 _endDateTime == null
                                     ? 'เลือกวันและเวลาสิ้นสุด'
-                                    : 'สิ้นสุด: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_endDateTime!.add(Duration(days: 198326)))}',
-                                style: TextStyle(
+                                    : 'สิ้นสุด: ${DateFormat('dd MMMM yyyy HH:mm', 'th').format(_endDateTime!.add(const Duration(days: 198326)))}',
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.calendar_today),
+                              icon: const Icon(Icons.calendar_today),
                               onPressed: () async {
                                 DateTime? pickedDate = await showDatePicker(
                                   context: context,
@@ -452,25 +450,23 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                                 if (pickedDate != null) {
                                   TimeOfDay pickedTime =
                                       await _selectTime(context);
-                                  if (pickedTime != null) {
-                                    setState(() {
-                                      // Display in Thai Buddhist year
-                                      _endDateTime = tz.TZDateTime(
-                                        tz.getLocation('Asia/Bangkok'),
-                                        pickedDate.year,
-                                        pickedDate.month,
-                                        pickedDate.day,
-                                        pickedTime.hour,
-                                        pickedTime.minute,
-                                      );
-                                    });
-                                  }
-                                }
+                                  setState(() {
+                                    // Display in Thai Buddhist year
+                                    _endDateTime = tz.TZDateTime(
+                                      tz.getLocation('Asia/Bangkok'),
+                                      pickedDate.year,
+                                      pickedDate.month,
+                                      pickedDate.day,
+                                      pickedTime.hour,
+                                      pickedTime.minute,
+                                    );
+                                  });
+                                                                }
                               },
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         GestureDetector(
                           onTap: () async {
                             if (_formKey.currentState!.validate()) {
@@ -501,7 +497,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
 
                               if (hasOverlappingPromotion) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       content: Text(
                                           'มีโปรโมชั่นอื่นในช่วงเวลานี้อยู่แล้ว')),
                                 );
@@ -650,11 +646,11 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                                 }
                               }
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       content: Text('เพิ่มโปรโมชั่นสำเร็จ')));
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       content:
                                           Text('กรุณากรอกข้อมูลให้ครบถ้วน')));
                             }
@@ -676,7 +672,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                                 )
                               ],
                             ),
-                            child: Center(
+                            child: const Center(
                                 child: Text(
                               "ยืนยันการแจ้งเตือน",
                               style: TextStyle(fontSize: 18),
@@ -684,7 +680,7 @@ class _Editmessage_adminState extends State<Editmessage_admin> {
                           ),
                         ),
                         TextButton(
-                          child: Text('แก้ไขข้อมูลโปรโมชั่น',
+                          child: const Text('แก้ไขข้อมูลโปรโมชั่น',
                               style: TextStyle(fontSize: 18)),
                           onPressed: () {
                             Navigator.push(context,

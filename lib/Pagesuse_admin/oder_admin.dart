@@ -4,6 +4,8 @@ import 'package:flutter_appshop1/Pagesuse_admin/OrderDetailScreen.dart';
 import 'package:intl/intl.dart';
 
 class OrderManagementScreen extends StatefulWidget {
+  const OrderManagementScreen({super.key});
+
   @override
   _OrderManagementScreenState createState() => _OrderManagementScreenState();
 }
@@ -14,7 +16,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
@@ -27,7 +29,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             final orders = snapshot.data!.docs;
 
@@ -37,7 +39,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
               final customer = order['ชื่อลูกค้า'];
               final timestamp = order['timestamp'] as Timestamp;
               final orderDate = DateFormat('yyyy-MM-dd')
-                  .format(timestamp.toDate().add(Duration(days: 198326)));
+                  .format(timestamp.toDate().add(const Duration(days: 198326)));
 
               String groupKey = '$customer-$orderDate';
 
@@ -68,7 +70,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                     groupOrders.any((doc) => doc['status'] == 'รอการอนุมัติ');
 
                 return Card(
-                  color: Color.fromARGB(255, 255, 255, 255),
+                  color: const Color.fromARGB(255, 255, 255, 255),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -81,28 +83,28 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                         ElevatedButton(
                           onPressed: () =>
                               _approveAllOrdersForCustomer(groupOrders),
+                          style: ElevatedButton.styleFrom(
+                            iconColor: const Color.fromARGB(
+                                255, 0, 0, 0), // Background color
+                            shadowColor: Colors.white, // Text color
+                            elevation: 5, // Add a shadow effect to the button
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 20), // Increase padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // Rounded corners
+                              side: const BorderSide(
+                                  color: Colors.black,
+                                  width: 2), // Border around the button
+                            ),
+                          ),
                           child: Text(
                             'อนุมัติออเดอร์ทั้งหมดของ $customerName',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            iconColor: Color.fromARGB(
-                                255, 0, 0, 0), // Background color
-                            shadowColor: Colors.white, // Text color
-                            elevation: 5, // Add a shadow effect to the button
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 20), // Increase padding
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(30), // Rounded corners
-                              side: BorderSide(
-                                  color: Colors.black,
-                                  width: 2), // Border around the button
-                            ),
                           ),
                         ),
 
@@ -111,6 +113,21 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                         ElevatedButton(
                           onPressed: () =>
                               _confirmAllDeliveriesForCustomer(groupOrders),
+                          style: ElevatedButton.styleFrom(
+                            iconColor: Colors.orange, // Background color
+                            shadowColor: Colors.white, // Text color
+                            elevation: 5, // Add a shadow effect to the button
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 20), // Increase padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // Rounded corners
+                              side: const BorderSide(
+                                  color: Colors.black,
+                                  width: 2), // Border around the button
+                            ),
+                          ),
                           child: Text(
                             'ยืนยันการส่งทั้งหมดของ $customerName',
                             style: TextStyle(
@@ -118,21 +135,6 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black // Make the text bold
                                 ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            iconColor: Colors.orange, // Background color
-                            shadowColor: Colors.white, // Text color
-                            elevation: 5, // Add a shadow effect to the button
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 20), // Increase padding
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(30), // Rounded corners
-                              side: BorderSide(
-                                  color: Colors.black,
-                                  width: 2), // Border around the button
-                            ),
                           ),
                         ),
 
@@ -142,6 +144,21 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                           onPressed: () =>
                               _cancelAllInsufficientStockPendingOrders(
                                   groupOrders),
+                          style: ElevatedButton.styleFrom(
+                            iconColor: Colors.red, // Background color
+                            shadowColor: Colors.white, // Text color
+                            elevation: 5, // Add a shadow effect to the button
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 20), // Increase padding
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(30), // Rounded corners
+                              side: const BorderSide(
+                                  color: Colors.red,
+                                  width: 2), // Border around the button
+                            ),
+                          ),
                           child: Text(
                             'ยกเลิกออเดอร์ทั้งหมดของ $customerName',
                             style: TextStyle(
@@ -150,21 +167,6 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                                 color:
                                     Colors.red // Make the text red for cancel
                                 ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            iconColor: Colors.red, // Background color
-                            shadowColor: Colors.white, // Text color
-                            elevation: 5, // Add a shadow effect to the button
-                            padding: EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 20), // Increase padding
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(30), // Rounded corners
-                              side: BorderSide(
-                                  color: Colors.red,
-                                  width: 2), // Border around the button
-                            ),
                           ),
                         ),
 
@@ -183,7 +185,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                           trailing: (doc['status'] ==
                                   'รอการอนุมัติ') // Show cancel button only if pending
                               ? IconButton(
-                                  icon: Icon(Icons.cancel, color: Colors.red),
+                                  icon: const Icon(Icons.cancel, color: Colors.red),
                                   onPressed: () {
                                     _cancelOrder(doc.id, doc['veggieId'],
                                         doc['quantity']);
@@ -200,7 +202,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
                             );
                           },
                         );
-                      }).toList(),
+                      }),
                     ],
                   ),
                 );
@@ -270,7 +272,7 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('คำสั่งซื้อถูกยกเลิกแล้ว')),
+      const SnackBar(content: Text('คำสั่งซื้อถูกยกเลิกแล้ว')),
     );
   }
 
@@ -282,24 +284,24 @@ class _OrderManagementScreenState extends State<OrderManagementScreen> {
         onPressed: () {
           _updateOrderStatus(doc.id, 'อนุมัติแล้ว');
         },
-        child: Text('อนุมัติ'),
+        child: const Text('อนุมัติ'),
       );
     } else if (status == 'อนุมัติแล้ว') {
       return ElevatedButton(
         onPressed: () {
           _updateOrderStatus(doc.id, 'คำสั่งซื้อสำเร็จ');
         },
-        child: Text('ยืนยันการส่ง'),
+        child: const Text('ยืนยันการส่ง'),
       );
     } else if (status == 'รอการอนุมัติ') {
       return ElevatedButton(
         onPressed: () {
           _updateOrderStatus(doc.id, 'ยกเลิกคำสั่งซื้อ');
         },
-        child: Text('ยกเลิกออเดอร์'),
         style: ElevatedButton.styleFrom(
           iconColor: Colors.red,
         ),
+        child: Text('ยกเลิกออเดอร์'),
       );
     } else {
       return Container(); // No button for completed or canceled orders

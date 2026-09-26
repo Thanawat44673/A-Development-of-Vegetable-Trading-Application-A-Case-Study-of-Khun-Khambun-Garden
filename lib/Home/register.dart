@@ -10,7 +10,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({super.key});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -20,7 +20,7 @@ class _RegisterState extends State<Register> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final Future<FirebaseApp> firebase = Firebase.initializeApp();
 
-  String _address = "";
+  final String _address = "";
   final TextEditingController _Name = TextEditingController();
   final TextEditingController _Lastname = TextEditingController();
   final TextEditingController _Email = TextEditingController();
@@ -114,7 +114,7 @@ class _RegisterState extends State<Register> {
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: const Color.fromARGB(255, 216, 255, 171),
-                title: Text("ไม่ได้"),
+                title: const Text("ไม่ได้"),
               ),
               body: Center(
                 child: Text("${snapshot.error}"),
@@ -125,7 +125,7 @@ class _RegisterState extends State<Register> {
             return Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
-                title: Text('สมาชิกใหม่'),
+                title: const Text('สมาชิกใหม่'),
                 backgroundColor: const Color.fromARGB(255, 216, 255, 171),
               ),
               body: Form(
@@ -142,7 +142,7 @@ class _RegisterState extends State<Register> {
                       children: [
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Name,
                             decoration: const InputDecoration(
@@ -187,7 +187,7 @@ class _RegisterState extends State<Register> {
                           padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                               controller: _Email,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.black),
                                   ),
@@ -200,20 +200,20 @@ class _RegisterState extends State<Register> {
                                     errorText: "กรุณากรอก อีเมลผู้ใช้งาน"),
                                 EmailValidator(
                                     errorText: "รูปแบบอีเมลไม่ถูกต้อง")
-                              ])),
+                              ]).call),
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Password,
                             onChanged: _validatePassword,
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                               labelText: 'รหัสผ่าน',
@@ -239,7 +239,7 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             onSaved: (String? TryPassword) {
                               profile.Trypassword = TryPassword!;
@@ -302,10 +302,10 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Address,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
@@ -324,10 +324,10 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              side: BorderSide(color: Colors.black87, width: 2),
+                              side: const BorderSide(color: Colors.black87, width: 2),
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.black,
                             ),
@@ -347,13 +347,13 @@ class _RegisterState extends State<Register> {
                                 });
                               }
                             },
-                            child: Text('เลือกพิกัดของท่าน',
+                            child: const Text('เลือกพิกัดของท่าน',
                                 style: TextStyle(fontSize: 20)),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: Container(
                             height: 200,
                             decoration: BoxDecoration(
@@ -376,7 +376,7 @@ class _RegisterState extends State<Register> {
                                       target: _selectedLocation!,
                                       zoom: 17,
                                     )
-                                  : CameraPosition(
+                                  : const CameraPosition(
                                       target: LatLng(0,
                                           0), // Initial position (center of the world)
                                       zoom: 17,
@@ -387,7 +387,7 @@ class _RegisterState extends State<Register> {
                                         markerId: MarkerId(
                                             _selectedLocation.toString()),
                                         position: _selectedLocation!,
-                                        infoWindow: InfoWindow(
+                                        infoWindow: const InfoWindow(
                                           title: 'Selected Location',
                                         ),
                                       ),
@@ -398,10 +398,10 @@ class _RegisterState extends State<Register> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              side: BorderSide(color: Colors.black87, width: 2),
+                              side: const BorderSide(color: Colors.black87, width: 2),
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.black,
                             ),
@@ -442,7 +442,7 @@ class _RegisterState extends State<Register> {
                                       gravity: ToastGravity.BOTTOM);
                                   Navigator.pushReplacement(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return Home1();
+                                    return const Home1();
                                   }));
                                 } on FirebaseAuthException catch (e) {
                                   String? message;
@@ -468,7 +468,7 @@ class _RegisterState extends State<Register> {
                                 _Image.text = '';
                               }
                             },
-                            child: Text('สมัครสมาชิก',
+                            child: const Text('สมัครสมาชิก',
                                 style: TextStyle(fontSize: 20)),
                           ),
                         ),
@@ -479,7 +479,7 @@ class _RegisterState extends State<Register> {
               ),
             );
           }
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

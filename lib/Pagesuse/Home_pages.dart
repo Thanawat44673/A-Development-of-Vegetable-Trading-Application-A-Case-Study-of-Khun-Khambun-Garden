@@ -8,6 +8,8 @@ import 'package:flutter_appshop1/Widgets/ProductDetailScreen.dart';
 import 'package:flutter_appshop1/Widgets/PopularItemsWidget.dart';
 
 class Home_v extends StatefulWidget {
+  const Home_v({super.key});
+
   @override
   State<Home_v> createState() => _Home_vState();
 }
@@ -16,10 +18,10 @@ class _Home_vState extends State<Home_v> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   // final CarouselController _controller = CarouselController();
 
-  List _products = [];
-  var _firestoreInstance = FirebaseFirestore.instance;
+  final List _products = [];
+  final _firestoreInstance = FirebaseFirestore.instance;
 
-  int _current = 0;
+  final int _current = 0;
 
   @override
   void initState() {
@@ -156,7 +158,7 @@ class _Home_vState extends State<Home_v> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
@@ -164,7 +166,7 @@ class _Home_vState extends State<Home_v> {
         ),
         child: ListView(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 10, left: 20, bottom: 15),
               child: Text(
                 "สวนคุณคำบุญ",
@@ -180,7 +182,7 @@ class _Home_vState extends State<Home_v> {
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return SearchForm();
+                      return const SearchForm();
                     }));
                   },
                   child: Container(
@@ -194,20 +196,20 @@ class _Home_vState extends State<Home_v> {
                             color: Colors.grey.withOpacity(0.5),
                             spreadRadius: 2,
                             blurRadius: 10,
-                            offset: Offset(0, 3),
+                            offset: const Offset(0, 3),
                           ),
                         ]),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 10,
                       ),
                       child: Row(
                         children: [
-                          Icon(
+                          const Icon(
                             CupertinoIcons.search,
                           ),
                           Container(
-                            child: Padding(
+                            child: const Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 15,
                               ),
@@ -222,7 +224,7 @@ class _Home_vState extends State<Home_v> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.shopping_cart,
                     color: Colors.red,
                     size: 35,
@@ -237,7 +239,7 @@ class _Home_vState extends State<Home_v> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             StreamBuilder(
@@ -247,13 +249,13 @@ class _Home_vState extends State<Home_v> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 if (snapshot.hasError) {
                   return Text('เกิดข้อผิดพลาด: ${snapshot.error}');
                 }
                 if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-                  return Text('');
+                  return const Text('');
                 }
 
                 // Filter out products without promotions
@@ -269,12 +271,12 @@ class _Home_vState extends State<Home_v> {
                 }).toList();
 
                 if (promotedProducts.isEmpty) {
-                  return SizedBox(); // Return an empty SizedBox when there are no promoted products
+                  return const SizedBox(); // Return an empty SizedBox when there are no promoted products
                 }
 
                 return Column(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(top: 5, right: 240, bottom: 5),
                       child: Text(
                         "สินค้าโปรโมชั่น",
@@ -285,7 +287,7 @@ class _Home_vState extends State<Home_v> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
+                    SizedBox(
                       height: 185,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -325,7 +327,7 @@ class _Home_vState extends State<Home_v> {
                                       ),
                                       Text(
                                         data['ชื่อผัก'],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),
@@ -393,7 +395,7 @@ class _Home_vState extends State<Home_v> {
                                         ),
                                       Text(
                                         'สินค้าคงเหลือ ${data['จำนวนผัก']} แพ็ค',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                           color: Colors.red,
@@ -408,11 +410,11 @@ class _Home_vState extends State<Home_v> {
                                     top: 8,
                                     right: 8,
                                     child: Container(
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       color: Colors.red,
                                       child: Text(
                                         '${percentageDiscount.toStringAsFixed(0)}%',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -424,9 +426,9 @@ class _Home_vState extends State<Home_v> {
                                     top: 8,
                                     right: 8,
                                     child: Container(
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       color: Colors.red,
-                                      child: Text(
+                                      child: const Text(
                                         'ลดราคา',
                                         style: TextStyle(
                                           color: Colors.white,
@@ -442,9 +444,9 @@ class _Home_vState extends State<Home_v> {
                                     top: 8,
                                     right: 8,
                                     child: Container(
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       color: Colors.red,
-                                      child: Text(
+                                      child: const Text(
                                         '1 แถม 1',
                                         style: TextStyle(
                                           color: Colors.white,
@@ -463,7 +465,7 @@ class _Home_vState extends State<Home_v> {
                 );
               },
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 20, left: 10),
               child: Text(
                 "สินค้าผักแนะนำของทางสวน",
@@ -477,7 +479,7 @@ class _Home_vState extends State<Home_v> {
               height: 10,
             ),
             PopularItemsWidget(),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 20, left: 10),
               child: Text(
                 "สินค้าผักทั้งหมด",
@@ -487,7 +489,7 @@ class _Home_vState extends State<Home_v> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             StreamBuilder(
@@ -497,16 +499,16 @@ class _Home_vState extends State<Home_v> {
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 if (snapshot.hasError) {
                   return Text('เกิดข้อผิดพลาด: ${snapshot.error}');
                 }
                 if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-                  return Text('ไม่พบข้อมูลสินค้า');
+                  return const Text('ไม่พบข้อมูลสินค้า');
                 }
                 return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0,
@@ -542,7 +544,7 @@ class _Home_vState extends State<Home_v> {
                                 ),
                                 Text(
                                   data['ชื่อผัก'],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                 ),
@@ -604,7 +606,7 @@ class _Home_vState extends State<Home_v> {
                                   ),
                                 Text(
                                   'สินค้าคงเหลือ ${data['จำนวนผัก']} แพ็ค',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                       color: Colors.red),
@@ -617,11 +619,11 @@ class _Home_vState extends State<Home_v> {
                               top: 8,
                               right: 8,
                               child: Container(
-                                padding: EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
                                 color: Colors.red,
                                 child: Text(
                                   '${percentageDiscount.toStringAsFixed(0)}%',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -633,9 +635,9 @@ class _Home_vState extends State<Home_v> {
                               top: 8,
                               right: 8,
                               child: Container(
-                                padding: EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
                                 color: Colors.red,
-                                child: Text(
+                                child: const Text(
                                   'ลดราคา',
                                   style: TextStyle(
                                     color: Colors.white,
@@ -649,9 +651,9 @@ class _Home_vState extends State<Home_v> {
                               top: 8,
                               right: 8,
                               child: Container(
-                                padding: EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
                                 color: Colors.red,
-                                child: Text(
+                                child: const Text(
                                   '1 แถม 1',
                                   style: TextStyle(
                                     color: Colors.white,

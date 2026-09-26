@@ -12,12 +12,12 @@ class ProductDetailScreen extends StatefulWidget {
   final User user;
   final DocumentSnapshot productDocument;
 
-  ProductDetailScreen({
-    Key? key,
+  const ProductDetailScreen({
+    super.key,
     required this.productDocument,
     required this.veggie,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   _ProductDetailScreenState createState() => _ProductDetailScreenState();
@@ -64,7 +64,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     final addToCartPosition = addToCartBox.localToGlobal(Offset.zero);
 
     _overlayEntry = _createOverlayEntry(addToCartPosition, cartPosition);
-    Overlay.of(context)!.insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
 
     _animationController.forward().then((_) {
       _animationController.reset();
@@ -208,10 +208,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     if (data == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Error'),
+          title: const Text('Error'),
           backgroundColor: const Color.fromARGB(255, 216, 255, 171),
         ),
-        body: Center(
+        body: const Center(
           child: Text('No product data available'),
         ),
       );
@@ -233,7 +233,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
             children: [
               IconButton(
                 key: _cartKey,
-                icon: Icon(
+                icon: const Icon(
                   Icons.shopping_cart,
                   color: Colors.red,
                 ),
@@ -254,18 +254,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       minWidth: 16,
                       minHeight: 16,
                     ),
                     child: Text(
                       '$_cartItemCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                       ),
@@ -279,7 +279,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
       ),
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
@@ -300,7 +300,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                 ],
               )),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Container(
               width: 350,
               decoration: BoxDecoration(
@@ -333,19 +333,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
-                          if (discountedPrice != null)
-                            Column(
-                              children: [
-                                Text(
-                                  'ลดราคา ${discountPrice} บาท เหลือ $discountedPrice บาท',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                    fontSize: 20,
-                                  ),
+                          Column(
+                            children: [
+                              Text(
+                                'ลดราคา ${discountPrice} บาท เหลือ $discountedPrice บาท',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                  fontSize: 20,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
                         ],
                       )
                     else if (isDiscountPeriod2)
@@ -361,19 +360,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
-                          if (discountedPrice1 != null)
-                            Column(
-                              children: [
-                                Text(
-                                  'ลดราคา ${percentageDiscount} % เหลือ  $discountedPrice1 บาท',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                    fontSize: 20,
-                                  ),
+                          Column(
+                            children: [
+                              Text(
+                                'ลดราคา ${percentageDiscount} % เหลือ  $discountedPrice1 บาท',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                  fontSize: 20,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
                         ],
                       )
                     else
@@ -389,7 +387,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               data['จำนวนผัก'] > 0
                   ? 'สินค้าคงเหลือ: ${data['จำนวนผัก']} แพ็ค'
@@ -398,7 +396,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                   fontSize: 20,
                   color: data['จำนวนผัก'] > 0 ? Colors.black : Colors.red),
             ),
-            Expanded(
+            const Expanded(
               child: SizedBox(),
             ),
             data['จำนวนผัก'] > 0
@@ -425,23 +423,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                           height: 75,
                           child: Container(
                             color: Colors.green,
-                            child: Column(
+                            child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 5),
+                                  padding: EdgeInsets.only(left: 5),
                                   child: Icon(
                                     Icons.shopping_cart,
-                                    color: const Color.fromARGB(
+                                    color: Color.fromARGB(
                                         255, 255, 255, 255),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 5),
+                                  padding: EdgeInsets.only(left: 5),
                                   child: Text(
                                     'เพิ่มลงในตะกร้า',
                                     style: TextStyle(
-                                      color: const Color.fromARGB(
+                                      color: Color.fromARGB(
                                           255, 255, 255, 255),
                                     ),
                                   ),
@@ -457,17 +455,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                           width: 250,
                           height: 75,
                           child: Padding(
-                            padding: EdgeInsets.only(),
+                            padding: const EdgeInsets.only(),
                             child: ElevatedButton(
-                              child: Text("สั่งซื้อสินค้า",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0),
                                 ),
-                                side: BorderSide(color: Colors.red, width: 2),
+                                side: const BorderSide(color: Colors.red, width: 2),
                                 backgroundColor: Colors.red,
                                 foregroundColor: Colors.white,
                               ),
@@ -482,13 +476,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                   },
                                 );
                               },
+                              child: Text("สั่งซื้อสินค้า",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ),
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
           ],
         ),
       ),
@@ -501,10 +499,10 @@ class ProductDetailsBottomSheet extends StatefulWidget {
   final User user;
 
   const ProductDetailsBottomSheet({
-    Key? key,
+    super.key,
     required this.veggie,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   _ProductDetailsBottomSheetState createState() =>
@@ -519,8 +517,8 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
     final data = widget.veggie.data() as Map<String, dynamic>?;
     if (data == null) {
       return Container(
-        padding: EdgeInsets.all(16.0),
-        child: Center(
+        padding: const EdgeInsets.all(16.0),
+        child: const Center(
           child: Text('No product data available'),
         ),
       );
@@ -537,14 +535,14 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
     }
 
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -563,12 +561,12 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
                 children: [
                   Text(
                     data['ชื่อผัก'],
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   if (discountPrice != null) ...[
                     Text(
-                      '${price} บาท',
-                      style: TextStyle(
+                      '$price บาท',
+                      style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -592,7 +590,7 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
                       ),
                     ),
                   ],
-                  Text(
+                  const Text(
                     '(500กรัม/แพ็ค)',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -600,19 +598,19 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 200),
+              const Padding(
+                padding: EdgeInsets.only(right: 200),
                 child: Text(
                   'จำนวน',
                   style: TextStyle(fontSize: 20),
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.remove),
+                icon: const Icon(Icons.remove),
                 onPressed: () {
                   if (selectedQuantity > 1) {
                     setState(() {
@@ -623,10 +621,10 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
               ),
               Text(
                 selectedQuantity.toString(),
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   if (selectedQuantity < data['จำนวนผัก']) {
                     setState(() {
@@ -646,13 +644,13 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           SizedBox(
             width: 300,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.black87, width: 2),
+                  side: const BorderSide(color: Colors.black87, width: 2),
                   borderRadius: BorderRadius.circular(0),
                 ),
                 backgroundColor: Colors.white,
@@ -674,7 +672,7 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
                         ? discountPrice
                         : price);
               },
-              child: Text('สั่งซื้อสินค้า', style: TextStyle(fontSize: 20)),
+              child: const Text('สั่งซื้อสินค้า', style: TextStyle(fontSize: 20)),
             ),
           ),
         ],
@@ -725,7 +723,7 @@ class _ProductDetailsBottomSheetState extends State<ProductDetailsBottomSheet> {
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('จำนวนสินค้าคงเหลือไม่พอ')),
+          const SnackBar(content: Text('จำนวนสินค้าคงเหลือไม่พอ')),
         );
       }
     }

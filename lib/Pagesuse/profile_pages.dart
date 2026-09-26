@@ -31,7 +31,7 @@ class _Profile_vState extends State<Profile_v> {
     await _auth.signOut();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Home1()),
+      MaterialPageRoute(builder: (context) => const Home1()),
     );
   }
 
@@ -40,13 +40,13 @@ class _Profile_vState extends State<Profile_v> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("แก้ไข" + field),
+        title: Text("แก้ไข$field"),
         content: TextField(
           autocorrect: true,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             hintText: "กรอก $fieldใหม่",
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: const TextStyle(color: Colors.grey),
           ),
           onChanged: (value) {
             newValue = value;
@@ -55,14 +55,14 @@ class _Profile_vState extends State<Profile_v> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'ยกเลิก',
               style: TextStyle(color: Colors.black),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(newValue),
-            child: Text(
+            child: const Text(
               'บันทึก',
               style: TextStyle(color: Colors.black),
             ),
@@ -71,7 +71,7 @@ class _Profile_vState extends State<Profile_v> {
       ),
     );
     //คำสั่งอัพโหลดข้อมูลการแก้ไข
-    if (newValue.trim().length > 0) {
+    if (newValue.trim().isNotEmpty) {
       await usersCollection.doc(currentUser.email).update({field: newValue});
     }
   }
@@ -81,7 +81,7 @@ class _Profile_vState extends State<Profile_v> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Profile_edit_map(),
+        builder: (context) => const Profile_edit_map(),
       ),
     );
     if (result != null) {
@@ -90,7 +90,7 @@ class _Profile_vState extends State<Profile_v> {
       });
     }
     //คำสั่งอัพโหลดข้อมูลการแก้ไข
-    if (newValue.trim().length > 0) {
+    if (newValue.trim().isNotEmpty) {
       await usersCollection.doc(currentUser.email).update({field: newValue});
     }
   }
@@ -159,7 +159,7 @@ class _Profile_vState extends State<Profile_v> {
                               gravity: ToastGravity.BOTTOM);
                         } catch (error) {}
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -199,7 +199,7 @@ class _Profile_vState extends State<Profile_v> {
                               gravity: ToastGravity.BOTTOM);
                         } catch (error) {}
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -233,7 +233,7 @@ class _Profile_vState extends State<Profile_v> {
 
             return Container(
               //alignment: Alignment.center,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
                       'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -251,19 +251,19 @@ class _Profile_vState extends State<Profile_v> {
                       ),
                     ),
                     Positioned(
+                      bottom: -10,
+                      left: 235,
                       child: IconButton(
                         onPressed: () {
                           showImagePickerOption(context);
                         },
                         icon: const Icon(Icons.add_a_photo),
                       ),
-                      bottom: -10,
-                      left: 235,
                     )
                   ]),
                   const SizedBox(height: 10),
                   Padding(
-                    padding: EdgeInsets.all(35),
+                    padding: const EdgeInsets.all(35),
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
@@ -317,13 +317,10 @@ class _Profile_vState extends State<Profile_v> {
                   SizedBox(
                     //คำสั่งในกล่องข้อความ
                     child: Padding(
-                      padding: EdgeInsets.only(left: 50, right: 50),
+                      padding: const EdgeInsets.only(left: 50, right: 50),
                       child: ElevatedButton(
-                        child: Text("ออกจากระบบ",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          side: BorderSide(color: Colors.black87, width: 2),
+                          side: const BorderSide(color: Colors.black87, width: 2),
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.black,
                         ),
@@ -332,12 +329,12 @@ class _Profile_vState extends State<Profile_v> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text('ยืนยันการออกจากระบบ',
+                                title: const Text('ยืนยันการออกจากระบบ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     )),
                                 content:
-                                    Text('คุณต้องการที่จะออกจากระบบหรือไม่?',
+                                    const Text('คุณต้องการที่จะออกจากระบบหรือไม่?',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -348,7 +345,7 @@ class _Profile_vState extends State<Profile_v> {
                                       // ปิดกล่องโต้ตอบ
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('ยกเลิก',
+                                    child: const Text('ยกเลิก',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -360,11 +357,11 @@ class _Profile_vState extends State<Profile_v> {
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              Home1(), // Replace with your admin home page
+                                              const Home1(), // Replace with your admin home page
                                         ),
                                       );
                                     },
-                                    child: Text('ยืนยัน',
+                                    child: const Text('ยืนยัน',
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
@@ -375,6 +372,9 @@ class _Profile_vState extends State<Profile_v> {
                             },
                           );
                         },
+                        child: Text("ออกจากระบบ",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),

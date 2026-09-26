@@ -14,7 +14,7 @@ class _Contact_pState extends State<Contact_p> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -23,7 +23,7 @@ class _Contact_pState extends State<Contact_p> {
         ),
         child: ListView(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 20, left: 10, bottom: 15),
               child: Text(
                 "ช่องทางการติดต่อทางสวน",
@@ -33,11 +33,11 @@ class _Contact_pState extends State<Contact_p> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 30, right: 30),
+              padding: const EdgeInsets.only(left: 30, right: 30),
               child: Container(
                 height: 500,
                 decoration: BoxDecoration(
@@ -50,11 +50,11 @@ class _Contact_pState extends State<Contact_p> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Text(
                         "หากคุณลูกค้ามีปัญหาเกี่ยวกับสินค้าต่างๆสามารถติดต่อสอบถามกับทางเราได้ทุกเมื่อ",
                         textAlign: TextAlign.center,
@@ -64,13 +64,13 @@ class _Contact_pState extends State<Contact_p> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25, right: 20),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 25, right: 20),
                           child: Icon(
                             Icons.facebook,
                             size: 50,
@@ -89,7 +89,7 @@ class _Contact_pState extends State<Contact_p> {
 
                                 return Text(
                                   ': ${userData['เฟสบุ๊ค']}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -105,13 +105,13 @@ class _Contact_pState extends State<Contact_p> {
                             }),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25, right: 20),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 25, right: 20),
                           child: Icon(
                             Icons.email,
                             size: 50,
@@ -130,7 +130,7 @@ class _Contact_pState extends State<Contact_p> {
 
                                 return Text(
                                   ': ${userData['อีเมล']}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -146,13 +146,13 @@ class _Contact_pState extends State<Contact_p> {
                             }),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25, right: 20),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 25, right: 20),
                           child: Icon(
                             Icons.call,
                             size: 50,
@@ -171,7 +171,7 @@ class _Contact_pState extends State<Contact_p> {
 
                                 return Text(
                                   ': โทร ${userData['เบอร์โทรศัพท์']}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),

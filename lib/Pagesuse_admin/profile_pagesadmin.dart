@@ -112,28 +112,26 @@ class _Profile_aState extends State<Profile_a> {
                       final String password = _Password.text;
                       final String number = _Number.text;
                       final String address = _Address.text;
-                      if (number != null) {
-                        FirebaseFirestore.instance
-                            .collection("members")
-                            .doc(documentSnapshot!.id)
-                            .update({
-                          'ชื่อ': name,
-                          'นามสกุล': lastname,
-                          'อีเมล': email,
-                          'รหัสผ่าน': password,
-                          'เบอร์โทรศัพท์': number,
-                          'ที่อยู๋': address,
-                        });
-                        _Name.text = '';
-                        _Lastname.text = '';
-                        _Email.text = '';
-                        _Password.text = '';
-                        _Number.text = '';
-                        _Address.text = '';
+                      FirebaseFirestore.instance
+                          .collection("members")
+                          .doc(documentSnapshot!.id)
+                          .update({
+                        'ชื่อ': name,
+                        'นามสกุล': lastname,
+                        'อีเมล': email,
+                        'รหัสผ่าน': password,
+                        'เบอร์โทรศัพท์': number,
+                        'ที่อยู๋': address,
+                      });
+                      _Name.text = '';
+                      _Lastname.text = '';
+                      _Email.text = '';
+                      _Password.text = '';
+                      _Number.text = '';
+                      _Address.text = '';
 
-                        Navigator.of(context).pop();
-                      }
-                    },
+                      Navigator.of(context).pop();
+                                        },
                     child: const Text('แก้ไข'))
               ],
             ),
@@ -169,7 +167,7 @@ class _Profile_aState extends State<Profile_a> {
       resizeToAvoidBottomInset: false,
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -186,7 +184,7 @@ class _Profile_aState extends State<Profile_a> {
                     final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
                     return Card(
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -229,7 +227,7 @@ class _Profile_aState extends State<Profile_a> {
             return const Add_u_admin();
           }));
         },
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         child: const Icon(Icons.add),
       ),
     );

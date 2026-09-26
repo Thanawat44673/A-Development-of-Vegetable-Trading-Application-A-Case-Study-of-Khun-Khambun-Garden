@@ -8,6 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Editvegetable_admin extends StatefulWidget {
+  const Editvegetable_admin({super.key});
+
   @override
   _Editvegetable_adminState createState() => _Editvegetable_adminState();
 }
@@ -78,7 +80,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                         Navigator.of(context)
                             .pop(imageUrl); // คืนค่า imageUrl กลับไป
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -120,7 +122,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                         Navigator.of(context)
                             .pop(imageUrl); // คืนค่า imageUrl กลับไป
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -145,7 +147,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
   final CollectionReference _Vegetable =
       FirebaseFirestore.instance.collection("Vegetable");
 
-  void _create([DocumentSnapshot? documentSnapshot]) async {
+  void _create() async {
     await showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -220,13 +222,13 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                   ElevatedButton(
                     onPressed: () async {
                       final String product = _Product.text;
-                      final int? number_pdt =
+                      final int? numberPdt =
                           int.tryParse(_Number_product.text);
                       final double? price = double.tryParse(_Price.text);
 
                       if (price != null &&
                           product.isNotEmpty &&
-                          number_pdt != null) {
+                          numberPdt != null) {
                         try {
                           // Upload product data to Firestore
                           await FirebaseFirestore.instance
@@ -235,7 +237,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                               .set({
                             'ชื่อผัก': product,
                             'ราคาผัก': price,
-                            'จำนวนผัก': number_pdt,
+                            'จำนวนผัก': numberPdt,
                             'รูปผัก': imageUrl // Use the uploaded image URL
                           });
                         } on FirebaseAuthException catch (e) {
@@ -332,7 +334,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                         ),
                       )
                     else
-                      Center(
+                      const Center(
                         child: Text(
                           'ไม่มีรูปภาพ', // ข้อความกรณีไม่มีรูป
                           style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -385,18 +387,18 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                               final String product = _Product.text;
                               final double? price =
                                   double.tryParse(_Price.text);
-                              final int? number_pdt =
+                              final int? numberPdt =
                                   int.tryParse(_Number_product.text);
 
                               if (price != null) {
                                 Map<String, dynamic> updateData = {
                                   'ชื่อผัก': product,
                                   'ราคาผัก': price,
-                                  'จำนวนผัก': number_pdt,
+                                  'จำนวนผัก': numberPdt,
                                 };
 
                                 // อัปเดตรูปภาพถ้ามีการเลือกใหม่
-                                if (imageUrl != null && imageUrl.isNotEmpty) {
+                                if (imageUrl.isNotEmpty) {
                                   updateData['รูปผัก'] = imageUrl;
                                 }
 
@@ -439,7 +441,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
       resizeToAvoidBottomInset: false,
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -457,7 +459,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
                     final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
                     return Card(
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -502,7 +504,7 @@ class _Editvegetable_adminState extends State<Editvegetable_admin> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _create(),
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         child: const Icon(Icons.add),
       ),
     );

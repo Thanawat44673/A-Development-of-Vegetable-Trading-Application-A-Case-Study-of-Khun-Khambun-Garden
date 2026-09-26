@@ -24,13 +24,13 @@ class _Editcontace_adminState extends State<Editcontace_admin> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("แก้ไข" + field),
+        title: Text("แก้ไข$field"),
         content: TextField(
           autocorrect: true,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             hintText: "กรอก $fieldใหม่",
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: const TextStyle(color: Colors.grey),
           ),
           onChanged: (value) {
             newValue = value;
@@ -39,14 +39,14 @@ class _Editcontace_adminState extends State<Editcontace_admin> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'ยกเลิก',
               style: TextStyle(color: Colors.black),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(newValue),
-            child: Text(
+            child: const Text(
               'บันทึก',
               style: TextStyle(color: Colors.black),
             ),
@@ -55,7 +55,7 @@ class _Editcontace_adminState extends State<Editcontace_admin> {
       ),
     );
     //คำสั่งอัพโหลดข้อมูลการแก้ไข
-    if (newValue.trim().length > 0) {
+    if (newValue.trim().isNotEmpty) {
       await usersCollection
           .doc("vsxLKKo7SlAlSeKhdpRP")
           .update({field: newValue});
@@ -87,7 +87,7 @@ class _Editcontace_adminState extends State<Editcontace_admin> {
 
             return Container(
               //alignment: Alignment.center,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/backgroud2.jpg'),
                   fit: BoxFit.cover,
@@ -96,7 +96,7 @@ class _Editcontace_adminState extends State<Editcontace_admin> {
               child: ListView(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(35),
+                    padding: const EdgeInsets.all(35),
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(

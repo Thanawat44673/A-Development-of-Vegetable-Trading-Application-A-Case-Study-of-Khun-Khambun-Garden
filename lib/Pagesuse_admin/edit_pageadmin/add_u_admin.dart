@@ -9,7 +9,7 @@ import 'package:form_field_validator/form_field_validator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Add_u_admin extends StatefulWidget {
-  const Add_u_admin({Key? key}) : super(key: key);
+  const Add_u_admin({super.key});
 
   @override
   State<Add_u_admin> createState() => _Add_u_adminState();
@@ -114,7 +114,7 @@ class _Add_u_adminState extends State<Add_u_admin> {
             return Scaffold(
               appBar: AppBar(
                 backgroundColor: const Color.fromARGB(255, 216, 255, 171),
-                title: Text("ไม่ได้"),
+                title: const Text("ไม่ได้"),
               ),
               body: Center(
                 child: Text("${snapshot.error}"),
@@ -127,14 +127,14 @@ class _Add_u_adminState extends State<Add_u_admin> {
               //ส่งค่ากลับไปยังหน้า Scaffold
               appBar: AppBar(
                 //ชื่อมุมขวาบน
-                title: Text('เพิ่มสมาชิก'),
+                title: const Text('เพิ่มสมาชิก'),
                 backgroundColor: const Color.fromARGB(255, 216, 255, 171),
               ),
               body: Form(
                 // รูปร่างทั้งหมด
                 key: formKey, // คำสั่งFormKey
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/backgroud2.jpg'),
                       fit: BoxFit.cover,
@@ -145,10 +145,10 @@ class _Add_u_adminState extends State<Add_u_admin> {
                       children: [
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Name,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -166,10 +166,10 @@ class _Add_u_adminState extends State<Add_u_admin> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Lastname,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
@@ -187,10 +187,10 @@ class _Add_u_adminState extends State<Add_u_admin> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                               controller: _Email,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide(color: Colors.black),
                                   ),
@@ -203,20 +203,20 @@ class _Add_u_adminState extends State<Add_u_admin> {
                                     errorText: "กรุณากรอก อีเมลผู้ใช้งาน"),
                                 EmailValidator(
                                     errorText: "รูปแบบอีเมลไม่ถูกต้อง")
-                              ])),
+                              ]).call),
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Password,
                             onChanged: _validatePassword,
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                               labelText: 'รหัสผ่าน',
@@ -242,7 +242,7 @@ class _Add_u_adminState extends State<Add_u_admin> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             onSaved: (String? TryPassword) {
                               profile.Trypassword = TryPassword!;
@@ -250,10 +250,10 @@ class _Add_u_adminState extends State<Add_u_admin> {
                             onChanged: _validatePassword2,
                             obscureText: !_passwordVisible2,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
                               labelText: 'กรอกรหัสผ่านอีกครั้ง',
@@ -279,11 +279,11 @@ class _Add_u_adminState extends State<Add_u_admin> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Number,
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
@@ -305,10 +305,10 @@ class _Add_u_adminState extends State<Add_u_admin> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: TextFormField(
                             controller: _Address,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
@@ -327,10 +327,10 @@ class _Add_u_adminState extends State<Add_u_admin> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              side: BorderSide(color: Colors.black87, width: 2),
+                              side: const BorderSide(color: Colors.black87, width: 2),
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.black,
                             ),
@@ -350,13 +350,13 @@ class _Add_u_adminState extends State<Add_u_admin> {
                                 });
                               }
                             },
-                            child: Text('เลือกพิกัดของท่าน',
+                            child: const Text('เลือกพิกัดของท่าน',
                                 style: TextStyle(fontSize: 20)),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: Container(
                             height: 200,
                             decoration: BoxDecoration(
@@ -379,7 +379,7 @@ class _Add_u_adminState extends State<Add_u_admin> {
                                       target: _selectedLocation!,
                                       zoom: 17,
                                     )
-                                  : CameraPosition(
+                                  : const CameraPosition(
                                       target: LatLng(0,
                                           0), // Initial position (center of the world)
                                       zoom: 17,
@@ -390,7 +390,7 @@ class _Add_u_adminState extends State<Add_u_admin> {
                                         markerId: MarkerId(
                                             _selectedLocation.toString()),
                                         position: _selectedLocation!,
-                                        infoWindow: InfoWindow(
+                                        infoWindow: const InfoWindow(
                                           title: 'Selected Location',
                                         ),
                                       ),
@@ -401,10 +401,10 @@ class _Add_u_adminState extends State<Add_u_admin> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding: EdgeInsets.only(left: 40, right: 40),
+                          padding: const EdgeInsets.only(left: 40, right: 40),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              side: BorderSide(color: Colors.black87, width: 2),
+                              side: const BorderSide(color: Colors.black87, width: 2),
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.black,
                             ),
@@ -468,7 +468,7 @@ class _Add_u_adminState extends State<Add_u_admin> {
                                 _Image.text = '';
                               }
                             },
-                            child: Text('สมัครสมาชิก',
+                            child: const Text('สมัครสมาชิก',
                                 style: TextStyle(fontSize: 20)),
                           ),
                         ),
@@ -479,7 +479,7 @@ class _Add_u_adminState extends State<Add_u_admin> {
               ),
             );
           }
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

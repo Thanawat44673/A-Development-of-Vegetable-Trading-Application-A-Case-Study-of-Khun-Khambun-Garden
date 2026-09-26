@@ -10,11 +10,11 @@ class ProductDetailsBottomSheet1 extends StatefulWidget {
   final VoidCallback onAddToCart;
 
   const ProductDetailsBottomSheet1({
-    Key? key,
+    super.key,
     required this.veggie,
     required this.user,
     required this.onAddToCart,
-  }) : super(key: key);
+  });
 
   @override
   _ProductDetailsBottomSheetState1 createState() =>
@@ -30,8 +30,8 @@ class _ProductDetailsBottomSheetState1
     final data = widget.veggie.data() as Map<String, dynamic>?;
     if (data == null) {
       return Container(
-        padding: EdgeInsets.all(16.0),
-        child: Center(
+        padding: const EdgeInsets.all(16.0),
+        child: const Center(
           child: Text('No product data available'),
         ),
       );
@@ -48,14 +48,14 @@ class _ProductDetailsBottomSheetState1
     }
 
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -74,12 +74,12 @@ class _ProductDetailsBottomSheetState1
                 children: [
                   Text(
                     data['ชื่อผัก'],
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   if (discountPrice != null) ...[
                     Text(
-                      '${price} บาท',
-                      style: TextStyle(
+                      '$price บาท',
+                      style: const TextStyle(
                         decoration: TextDecoration.lineThrough,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -103,7 +103,7 @@ class _ProductDetailsBottomSheetState1
                       ),
                     ),
                   ],
-                  Text(
+                  const Text(
                     '(500กรัม/แพ็ค)',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -111,19 +111,19 @@ class _ProductDetailsBottomSheetState1
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 200),
+              const Padding(
+                padding: EdgeInsets.only(right: 200),
                 child: Text(
                   'จำนวน',
                   style: TextStyle(fontSize: 20),
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.remove),
+                icon: const Icon(Icons.remove),
                 onPressed: () {
                   if (selectedQuantity > 1) {
                     setState(() {
@@ -134,10 +134,10 @@ class _ProductDetailsBottomSheetState1
               ),
               Text(
                 selectedQuantity.toString(),
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   if (selectedQuantity < widget.veggie['จำนวนผัก']) {
                     setState(() {
@@ -157,13 +157,13 @@ class _ProductDetailsBottomSheetState1
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           SizedBox(
             width: 300,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(color: Colors.black87, width: 2),
+                  side: const BorderSide(color: Colors.black87, width: 2),
                   borderRadius: BorderRadius.circular(0),
                 ),
                 backgroundColor: Colors.white,
@@ -172,7 +172,7 @@ class _ProductDetailsBottomSheetState1
               onPressed: () async {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('ได้เพิ่มสินค้าลงตะกร้าแล้ว')),
+                  const SnackBar(content: Text('ได้เพิ่มสินค้าลงตะกร้าแล้ว')),
                 );
                 widget.onAddToCart();
                 await _updateCart(
@@ -183,7 +183,7 @@ class _ProductDetailsBottomSheetState1
                         ? discountPrice
                         : price);
               },
-              child: Text('เพิ่มในตะกร้า', style: TextStyle(fontSize: 20)),
+              child: const Text('เพิ่มในตะกร้า', style: TextStyle(fontSize: 20)),
             ),
           ),
         ],
@@ -234,7 +234,7 @@ class _ProductDetailsBottomSheetState1
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('จำนวนสินค้าคงเหลือไม่พอ')),
+          const SnackBar(content: Text('จำนวนสินค้าคงเหลือไม่พอ')),
         );
       }
     }

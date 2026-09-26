@@ -16,11 +16,11 @@ class MonthlyDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedStartOfMonth = DateFormat('MMMM y', 'th_TH')
-        .format(startOfMonth.add(Duration(days: 198326)));
+        .format(startOfMonth.add(const Duration(days: 198326)));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${formattedStartOfMonth}'),
+        title: Text(formattedStartOfMonth),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       body: StreamBuilder(
@@ -30,11 +30,11 @@ class MonthlyDetailsScreen extends StatelessWidget {
                 isGreaterThanOrEqualTo: Timestamp.fromDate(startOfMonth))
             .where('timestamp',
                 isLessThan:
-                    Timestamp.fromDate(endOfMonth.add(Duration(days: 1))))
+                    Timestamp.fromDate(endOfMonth.add(const Duration(days: 1))))
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             // Initialize weeklyData with all weeks set to 0 income
@@ -138,12 +138,12 @@ class MonthlyDetailsScreen extends StatelessWidget {
                         touchTooltipData: BarTouchTooltipData(
                           getTooltipColor: (BarChartGroupData group) =>
                               Colors.black,
-                          tooltipPadding: EdgeInsets.all(2),
+                          tooltipPadding: const EdgeInsets.all(2),
                           getTooltipItem: (group, groupIndex, rod, rodIndex) {
                             return BarTooltipItem(
                               rod.toY.toStringAsFixed(
                                   2), // Display two decimal places
-                              TextStyle(
+                              const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -161,7 +161,7 @@ class MonthlyDetailsScreen extends StatelessWidget {
                                 axisSide: meta.axisSide,
                                 child: Text(
                                   value.toStringAsFixed(0),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
@@ -180,7 +180,7 @@ class MonthlyDetailsScreen extends StatelessWidget {
                                 axisSide: meta.axisSide,
                                 child: Text(
                                   'สัปดาห์ที่ ${value.toInt()}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -190,12 +190,12 @@ class MonthlyDetailsScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                        topTitles: AxisTitles(
+                        topTitles: const AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: false,
                           ),
                         ),
-                        rightTitles: AxisTitles(
+                        rightTitles: const AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: false,
                           ),
@@ -218,15 +218,15 @@ class MonthlyDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(
                       'สัปดาห์ที่ $weekNumber',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   if (productData.isEmpty)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
                         'ไม่มีการสั่งซื้อ',
                         style: TextStyle(
@@ -239,7 +239,7 @@ class MonthlyDetailsScreen extends StatelessWidget {
                   else
                     ListView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: productData.length,
                       itemBuilder: (context, index) {
                         var entry = productData.entries.elementAt(index);
@@ -248,7 +248,7 @@ class MonthlyDetailsScreen extends StatelessWidget {
                         var price = entry.value['price']!;
 
                         return Card(
-                          margin: EdgeInsets.all(10),
+                          margin: const EdgeInsets.all(10),
                           child: ListTile(
                             title: Text('สินค้า: $productName'),
                             subtitle: Text(

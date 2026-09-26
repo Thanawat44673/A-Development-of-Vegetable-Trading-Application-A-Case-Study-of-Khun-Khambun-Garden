@@ -7,7 +7,7 @@ import 'package:flutter_appshop1/auth/text_box.dart';
 class OrderConfirmationScreen extends StatefulWidget {
   final User user;
 
-  OrderConfirmationScreen({required this.user});
+  const OrderConfirmationScreen({super.key, required this.user});
 
   @override
   _OrderConfirmationScreenState createState() =>
@@ -23,13 +23,13 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("แก้ไข" + field),
+        title: Text("แก้ไข$field"),
         content: TextField(
           autocorrect: true,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
             hintText: "กรอก $fieldใหม่",
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: const TextStyle(color: Colors.grey),
           ),
           onChanged: (value) {
             newValue = value;
@@ -38,14 +38,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
+            child: const Text(
               'ยกเลิก',
               style: TextStyle(color: Colors.black),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(newValue),
-            child: Text(
+            child: const Text(
               'บันทึก',
               style: TextStyle(color: Colors.black),
             ),
@@ -54,7 +54,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       ),
     );
     //คำสั่งอัพโหลดข้อมูลการแก้ไข
-    if (newValue.trim().length > 0) {
+    if (newValue.trim().isNotEmpty) {
       await usersCollection.doc(currentUser.email).update({field: newValue});
     }
   }
@@ -84,11 +84,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('รายละเอียดยืนยันคำสั่งซื้อ'),
+        title: const Text('รายละเอียดยืนยันคำสั่งซื้อ'),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -97,7 +97,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
         ),
         child: ListView(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             StreamBuilder<DocumentSnapshot>(
@@ -125,11 +125,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 );
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Container(
                 height: 300,
                 decoration: BoxDecoration(
@@ -142,11 +142,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 215),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 215),
                       child: Text(
                         "รายการทั้งหมด",
                         style: TextStyle(
@@ -164,7 +164,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         builder:
                             (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                           if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           }
                           final cartItems = snapshot.data!.docs;
 
@@ -184,12 +184,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         'ราคา: ${doc['price']} x $quantity \n${itemTotal1.toStringAsFixed(2)} บาท';
                                     if (isOnePlusOne == true) {
                                       subtitleText +=
-                                          '\n${doc['name']} ได้รับเพิ่ม ${quantity} แพ็ค';
+                                          '\n${doc['name']} ได้รับเพิ่ม $quantity แพ็ค';
                                     }
 
                                     return ListTile(
                                       title: Text(doc['name'],
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold)),
                                       subtitle: Text(subtitleText),
@@ -197,20 +197,20 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
                                           IconButton(
-                                            icon: Icon(Icons.remove),
+                                            icon: const Icon(Icons.remove),
                                             onPressed: () {
                                               _decrementQuantity(doc);
                                             },
                                           ),
                                           Text(quantity.toString()),
                                           IconButton(
-                                            icon: Icon(Icons.add),
+                                            icon: const Icon(Icons.add),
                                             onPressed: () {
                                               _incrementQuantity(doc);
                                             },
                                           ),
                                           IconButton(
-                                            icon: Icon(Icons.delete),
+                                            icon: const Icon(Icons.delete),
                                             onPressed: () {
                                               _deleteItem(doc);
                                             },
@@ -230,11 +230,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               child: Container(
                 height: 300,
                 decoration: BoxDecoration(
@@ -247,11 +247,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 190),
+                    const Padding(
+                      padding: EdgeInsets.only(right: 190),
                       child: Text(
                         "ข้อมูลการชำระเงิน",
                         style: TextStyle(
@@ -260,12 +260,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           '    สินค้าที่ได้รับเพิ่ม',
                           style: TextStyle(fontSize: 16),
                         ),
@@ -277,7 +277,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             }
 
                             final cartItems = snapshot.data!.docs;
@@ -304,8 +304,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         padding:
                                             const EdgeInsets.only(left: 135),
                                         child: Text(
-                                          ' ${totaldiscout} แพ็ค',
-                                          style: TextStyle(
+                                          ' $totaldiscout แพ็ค',
+                                          style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -320,12 +320,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           '    ยอดคำสั่งซื้อปกติ ',
                           style: TextStyle(fontSize: 16),
                         ),
@@ -337,7 +337,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             }
                             final cartItems = snapshot.data!.docs;
 
@@ -357,7 +357,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         ),
                                         child: Text(
                                           '${totalAmount.toStringAsFixed(1)} บาท',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -371,12 +371,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           '    ส่วนลดที่ได้รับ',
                           style: TextStyle(fontSize: 16),
                         ),
@@ -388,7 +388,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             }
 
                             final cartItems1 = snapshot.data!.docs;
@@ -411,7 +411,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                             const EdgeInsets.only(left: 143),
                                         child: Text(
                                           ' ${totaldiscout.toStringAsFixed(1)} บาท',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -425,12 +425,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 80,
                     ),
                     Row(
                       children: [
-                        Text(
+                        const Text(
                           '   ยอดชำระเงินทั้งหมด',
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
@@ -443,7 +443,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                           builder:
                               (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(child: CircularProgressIndicator());
                             }
                             final cartItems = snapshot.data!.docs;
 
@@ -463,7 +463,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                                         ),
                                         child: Text(
                                           '${totalAmount.toStringAsFixed(1)} บาท',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -481,10 +481,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             StreamBuilder(
@@ -494,7 +494,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 final cartItems = snapshot.data!.docs;
 
@@ -502,21 +502,21 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                   width: double.infinity,
                   height: 75,
                   child: ElevatedButton(
-                    child: Text("สั่งซื้อสินค้า",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                             0), // ปรับเป็นค่าที่คุณต้องการ
                       ),
-                      side: BorderSide(color: Colors.red, width: 2),
+                      side: const BorderSide(color: Colors.red, width: 2),
                       backgroundColor: Colors.red,
                       foregroundColor: Colors.white,
                     ),
                     onPressed: () {
                       _purchaseItems(cartItems);
                     },
+                    child: Text("สั่งซื้อสินค้า",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
                   ),
                 );
               },
@@ -541,7 +541,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       _calculateTotal();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('ไม่สามารถเพิ่มจำนวนสินค้าได้มากกว่านี้')),
+        const SnackBar(content: Text('ไม่สามารถเพิ่มจำนวนสินค้าได้มากกว่านี้')),
       );
     }
   }
@@ -616,11 +616,11 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
 
     _clearCart();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('สั่งซื้อเรียบร้อยแล้ว')),
+      const SnackBar(content: Text('สั่งซื้อเรียบร้อยแล้ว')),
     );
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => Welcomehome(),
+        builder: (context) => const Welcomehome(),
       ),
     );
   }

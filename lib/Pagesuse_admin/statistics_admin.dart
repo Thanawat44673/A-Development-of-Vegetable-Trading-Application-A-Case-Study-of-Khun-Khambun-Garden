@@ -16,7 +16,7 @@ class StatisticsAdmin extends StatefulWidget {
 class _StatisticsAdminState extends State<StatisticsAdmin> {
   final CollectionReference _incomeCollection =
       FirebaseFirestore.instance.collection('orders');
-  Map<DateTime, double> _incomeData = {};
+  final Map<DateTime, double> _incomeData = {};
   DateTime _selectedDate = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
@@ -46,7 +46,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
@@ -56,10 +56,10 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
           stream: _incomeCollection.snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(child: Text('No data available'));
+              return const Center(child: Text('No data available'));
             }
 
             _incomeData.clear();
@@ -104,13 +104,13 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
             }
 
             String formattedSelectedDate = DateFormat('d MMMM y', 'th_TH')
-                .format(_selectedDate.add(Duration(days: 198326)));
+                .format(_selectedDate.add(const Duration(days: 198326)));
             String formattedStartOfWeek = DateFormat('d MMM y', 'th_TH')
-                .format(startOfWeek.add(Duration(days: 198326)));
+                .format(startOfWeek.add(const Duration(days: 198326)));
             String formattedEndOfWeek = DateFormat('d MMM y', 'th_TH')
-                .format(endOfWeek.add(Duration(days: 198326)));
+                .format(endOfWeek.add(const Duration(days: 198326)));
             String formattedStartOfMonth = DateFormat('MMMM y', 'th_TH')
-                .format(startOfMonth.add(Duration(days: 198326)));
+                .format(startOfMonth.add(const Duration(days: 198326)));
 
             return Column(
               children: [
@@ -142,7 +142,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                       _calendarFormat = format;
                     });
                   },
-                  calendarStyle: CalendarStyle(
+                  calendarStyle: const CalendarStyle(
                     todayDecoration: BoxDecoration(
                       color: Colors.blueAccent,
                       shape: BoxShape.circle,
@@ -157,14 +157,14 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                     titleCentered: true,
                     titleTextFormatter: (date, locale) {
                       return DateFormat('MMMM y', 'th_TH')
-                          .format(date.add(Duration(days: 198326)));
+                          .format(date.add(const Duration(days: 198326)));
                     },
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 if (_incomeData[_normalizeDate(_selectedDate)] != null)
                   Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -183,7 +183,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                     ),
                   )
                 else
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Text(
                       'ไม่มีข้อมูลรายได้สำหรับวันที่เลือก',
@@ -191,10 +191,10 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 if (weeklyIncome > 0)
                   Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -216,7 +216,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                     ),
                   )
                 else
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Text(
                       'ไม่มีข้อมูลรายได้สำหรับสัปดาห์ที่เลือก',
@@ -224,10 +224,10 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 if (monthlyIncome > 0)
                   Card(
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
@@ -248,7 +248,7 @@ class _StatisticsAdminState extends State<StatisticsAdmin> {
                     ),
                   )
                 else
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Text(
                       'ไม่มีข้อมูลรายได้สำหรับเดือนที่เลือก',
@@ -292,10 +292,10 @@ class DailyDetailsScreen extends StatelessWidget {
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('ไม่มีข้อมูลสินค้าในวันนี้'));
+            return const Center(child: Text('ไม่มีข้อมูลสินค้าในวันนี้'));
           }
 
           Map<String, Map<String, double>> productData = {};
@@ -357,11 +357,11 @@ class DailyDetailsScreen extends StatelessWidget {
                         touchTooltipData: BarTouchTooltipData(
                           getTooltipColor: (BarChartGroupData group) =>
                               Colors.black,
-                          tooltipPadding: EdgeInsets.all(2),
+                          tooltipPadding: const EdgeInsets.all(2),
                           getTooltipItem: (group, groupIndex, rod, rodIndex) {
                             return BarTooltipItem(
                               rod.toY.toString(),
-                              TextStyle(
+                              const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -379,7 +379,7 @@ class DailyDetailsScreen extends StatelessWidget {
                                 axisSide: meta.axisSide,
                                 child: Text(
                                   '${value.toInt()}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
@@ -398,7 +398,7 @@ class DailyDetailsScreen extends StatelessWidget {
                                 axisSide: meta.axisSide,
                                 child: Text(
                                   productData.keys.elementAt(value.toInt()),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
@@ -408,12 +408,12 @@ class DailyDetailsScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                        topTitles: AxisTitles(
+                        topTitles: const AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: false,
                           ),
                         ),
-                        rightTitles: AxisTitles(
+                        rightTitles: const AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: false,
                           ),
@@ -426,7 +426,7 @@ class DailyDetailsScreen extends StatelessWidget {
                 ),
                 ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: productData.length,
                   itemBuilder: (context, index) {
                     var entry = productData.entries.elementAt(index);
@@ -435,7 +435,7 @@ class DailyDetailsScreen extends StatelessWidget {
                     var price = entry.value['price']!;
 
                     return Card(
-                      margin: EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
                       child: ListTile(
                         title: Text('สินค้า: $productName'),
                         subtitle: Text(

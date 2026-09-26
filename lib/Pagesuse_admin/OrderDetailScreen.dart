@@ -5,7 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class OrderDetailScreen extends StatefulWidget {
   final String orderId;
 
-  OrderDetailScreen({required this.orderId});
+  const OrderDetailScreen({super.key, required this.orderId});
 
   @override
   _OrderDetailScreenState createState() => _OrderDetailScreenState();
@@ -19,12 +19,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('รายละเอียดลูกค้า'),
+        title: const Text('รายละเอียดลูกค้า'),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -40,14 +40,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   .get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasError) {
                   return Center(
                       child: Text('เกิดข้อผิดพลาด: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || !snapshot.data!.exists) {
-                  return Center(child: Text('ไม่พบข้อมูลการสั่งซื้อ'));
+                  return const Center(child: Text('ไม่พบข้อมูลการสั่งซื้อ'));
                 }
 
                 var doc = snapshot.data!;
@@ -60,7 +60,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 _customerLocation = LatLng(latitude, longitude);
 
                 return Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -83,54 +83,54 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 8),
+                            const SizedBox(height: 8),
                             Text('ชื่อลูกค้า: ${doc['ชื่อลูกค้า']}',
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(height: 8),
+                                style: const TextStyle(fontSize: 18)),
+                            const SizedBox(height: 8),
                             Text('นามสกุลลูกค้า: ${doc['นามสกุลลูกค้า']}',
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(height: 8),
+                                style: const TextStyle(fontSize: 18)),
+                            const SizedBox(height: 8),
                             Text('เบอร์ลูกค้า: ${doc['เบอร์โทรศัพท์']}',
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(height: 8),
+                                style: const TextStyle(fontSize: 18)),
+                            const SizedBox(height: 8),
                             Text('ที่อยู่ลูกค้า: ${doc['ที่อยู่']}',
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(height: 8),
+                                style: const TextStyle(fontSize: 18)),
+                            const SizedBox(height: 8),
                             Text('ชื่อผัก: ${doc['name']}',
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(height: 8),
+                                style: const TextStyle(fontSize: 18)),
+                            const SizedBox(height: 8),
                             Text('จำนวนที่สั่ง: ${doc['quantity']}',
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(height: 8),
+                                style: const TextStyle(fontSize: 18)),
+                            const SizedBox(height: 8),
                             Text(
                                 'ราคารวม: ${doc['price'] * doc['quantity']} บาท',
-                                style: TextStyle(fontSize: 18)),
-                            SizedBox(height: 8),
+                                style: const TextStyle(fontSize: 18)),
+                            const SizedBox(height: 8),
                             Text('สถานะการสั่งซื้อ: ${doc['status']}',
-                                style: TextStyle(fontSize: 18)),
+                                style: const TextStyle(fontSize: 18)),
                           ],
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Container(
+                      const SizedBox(height: 16),
+                      SizedBox(
                         height: 300,
                         child: GoogleMap(
                           onMapCreated: _onMapCreated,
                           initialCameraPosition: CameraPosition(
-                            target: _customerLocation ?? LatLng(0, 0),
+                            target: _customerLocation ?? const LatLng(0, 0),
                             zoom: 20,
                           ),
                           markers: _customerLocation != null
                               ? {
                                   Marker(
-                                    markerId: MarkerId('customerLocation'),
+                                    markerId: const MarkerId('customerLocation'),
                                     position: _customerLocation!,
                                   )
                                 }
                               : {},
                         ),
                       ),
-                      SizedBox(height: 53.1),
+                      const SizedBox(height: 53.1),
                       _buildActionButton(doc),
                     ],
                   ),
@@ -155,13 +155,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         width: double.infinity,
         height: 75,
         child: ElevatedButton(
-          child: Text("อนุมัติ",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
-            side: BorderSide(color: Colors.red, width: 2),
+            side: const BorderSide(color: Colors.red, width: 2),
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
           ),
@@ -171,6 +169,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               Navigator.of(context).pop();
             }
           },
+          child: Text("อนุมัติ",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),
       );
     } else if (status == 'อนุมัติแล้ว') {
@@ -178,13 +178,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         width: double.infinity,
         height: 75,
         child: ElevatedButton(
-          child: Text("การสั่งซื้อเสร็จสิ้น",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(0),
             ),
-            side: BorderSide(color: Colors.red, width: 2),
+            side: const BorderSide(color: Colors.red, width: 2),
             backgroundColor: Colors.red,
             foregroundColor: Colors.white,
           ),
@@ -194,6 +192,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               Navigator.of(context).pop();
             }
           },
+          child: Text("การสั่งซื้อเสร็จสิ้น",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),
       );
     } else {

@@ -30,7 +30,7 @@ class _SearchFormState extends State<SearchForm> {
     );
   }
 
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<DocumentSnapshot> _searchResults = [];
   bool _isSearching = false;
 
@@ -59,12 +59,12 @@ class _SearchFormState extends State<SearchForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ค้นหาผัก'),
+        title: const Text('ค้นหาผัก'),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       body: Container(
         //alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -75,7 +75,7 @@ class _SearchFormState extends State<SearchForm> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 10,
                 horizontal: 20,
               ),
@@ -90,25 +90,25 @@ class _SearchFormState extends State<SearchForm> {
                         color: Colors.grey.withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 10,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ]),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 15,
                   ),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 50,
                         width: 200,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 15,
                           ),
                           child: TextFormField(
                             controller: _searchController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 hintText: "ค้นหาสินค้าได้ตรงนี้",
                                 border: InputBorder.none),
                           ),
@@ -117,7 +117,7 @@ class _SearchFormState extends State<SearchForm> {
                       Padding(
                         padding: const EdgeInsets.only(left: 90),
                         child: IconButton(
-                          icon: Icon(Icons.search),
+                          icon: const Icon(Icons.search),
                           onPressed: () {
                             _searchProducts(_searchController.text);
                           },
@@ -128,11 +128,11 @@ class _SearchFormState extends State<SearchForm> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _isSearching
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : _searchResults.isEmpty
-                    ? Center(
+                    ? const Center(
                         child: Text(
                           'ไม่พบสินค้า',
                           style: TextStyle(
@@ -151,7 +151,7 @@ class _SearchFormState extends State<SearchForm> {
                                 _openProductDetailPage(context, vegetable);
                               },
                               child: Padding(
-                                padding: EdgeInsets.only(left: 50, right: 50),
+                                padding: const EdgeInsets.only(left: 50, right: 50),
                                 child: Card(
                                   child: Column(
                                     children: [
@@ -163,18 +163,18 @@ class _SearchFormState extends State<SearchForm> {
                                               vegetable['รูปผัก']),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20,
                                       ),
                                       Text(
                                         vegetable['ชื่อผัก'],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16),
                                       ),
                                       Text(
                                         '${vegetable['ราคาผัก']} บาท/กก.',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
                                             color: Colors.red),

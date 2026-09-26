@@ -10,10 +10,10 @@ class Details3 extends StatefulWidget {
   final User user;
 
   const Details3({
-    Key? key,
+    super.key,
     required this.veggie,
     required this.user,
-  }) : super(key: key);
+  });
 
   @override
   State<Details3> createState() => _Details3State();
@@ -60,7 +60,7 @@ class _Details3State extends State<Details3>
     final addToCartPosition = addToCartBox.localToGlobal(Offset.zero);
 
     _overlayEntry = _createOverlayEntry(addToCartPosition, cartPosition);
-    Overlay.of(context)!.insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
 
     _animationController.forward().then((_) {
       _animationController.reset();
@@ -204,10 +204,10 @@ class _Details3State extends State<Details3>
     if (data == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Error'),
+          title: const Text('Error'),
           backgroundColor: const Color.fromARGB(255, 216, 255, 171),
         ),
-        body: Center(
+        body: const Center(
           child: Text('No product data available'),
         ),
       );
@@ -229,7 +229,7 @@ class _Details3State extends State<Details3>
             children: [
               IconButton(
                 key: _cartKey,
-                icon: Icon(
+                icon: const Icon(
                   Icons.shopping_cart,
                   color: Colors.red,
                 ),
@@ -250,18 +250,18 @@ class _Details3State extends State<Details3>
                   right: 8,
                   top: 8,
                   child: Container(
-                    padding: EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(2),
                     decoration: BoxDecoration(
                       color: Colors.red,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       minWidth: 16,
                       minHeight: 16,
                     ),
                     child: Text(
                       '$_cartItemCount',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
                       ),
@@ -275,7 +275,7 @@ class _Details3State extends State<Details3>
       ),
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/backgroud2.jpg'),
             fit: BoxFit.cover,
@@ -296,7 +296,7 @@ class _Details3State extends State<Details3>
                 ],
               )),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Container(
               width: 350,
               decoration: BoxDecoration(
@@ -329,19 +329,18 @@ class _Details3State extends State<Details3>
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
-                          if (discountedPrice != null)
-                            Column(
-                              children: [
-                                Text(
-                                  '$discountedPrice บาท (-${discountPrice} บาท)',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                    fontSize: 22,
-                                  ),
+                          Column(
+                            children: [
+                              Text(
+                                '$discountedPrice บาท (-${discountPrice} บาท)',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                  fontSize: 22,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
                         ],
                       )
                     else if (isDiscountPeriod2)
@@ -357,19 +356,18 @@ class _Details3State extends State<Details3>
                               decoration: TextDecoration.lineThrough,
                             ),
                           ),
-                          if (discountedPrice1 != null)
-                            Column(
-                              children: [
-                                Text(
-                                  '$discountedPrice1 บาท (-${percentageDiscount} %)',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                    fontSize: 22,
-                                  ),
+                          Column(
+                            children: [
+                              Text(
+                                '$discountedPrice1 บาท (-${percentageDiscount} %)',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                  fontSize: 22,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
                         ],
                       )
                     else
@@ -385,7 +383,7 @@ class _Details3State extends State<Details3>
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(
               data['จำนวนผัก'] > 0
                   ? 'สินค้าคงเหลือ: ${data['จำนวนผัก']} แพ็ค'
@@ -394,7 +392,7 @@ class _Details3State extends State<Details3>
                   fontSize: 20,
                   color: data['จำนวนผัก'] > 0 ? Colors.black : Colors.red),
             ),
-            Expanded(
+            const Expanded(
               child: SizedBox(),
             ),
             data['จำนวนผัก'] > 0
@@ -421,23 +419,23 @@ class _Details3State extends State<Details3>
                           height: 75,
                           child: Container(
                             color: Colors.green,
-                            child: Column(
+                            child: const Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 5),
+                                  padding: EdgeInsets.only(left: 5),
                                   child: Icon(
                                     Icons.shopping_cart,
-                                    color: const Color.fromARGB(
+                                    color: Color.fromARGB(
                                         255, 255, 255, 255),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 5),
+                                  padding: EdgeInsets.only(left: 5),
                                   child: Text(
                                     'เพิ่มลงในตะกร้า',
                                     style: TextStyle(
-                                      color: const Color.fromARGB(
+                                      color: Color.fromARGB(
                                           255, 255, 255, 255),
                                     ),
                                   ),
@@ -453,17 +451,13 @@ class _Details3State extends State<Details3>
                           width: 250,
                           height: 75,
                           child: Padding(
-                            padding: EdgeInsets.only(),
+                            padding: const EdgeInsets.only(),
                             child: ElevatedButton(
-                              child: Text("สั่งซื้อสินค้า",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(0),
                                 ),
-                                side: BorderSide(color: Colors.red, width: 2),
+                                side: const BorderSide(color: Colors.red, width: 2),
                                 backgroundColor: Colors.red,
                                 foregroundColor: Colors.white,
                               ),
@@ -478,13 +472,17 @@ class _Details3State extends State<Details3>
                                   },
                                 );
                               },
+                              child: Text("สั่งซื้อสินค้า",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ),
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
           ],
         ),
       ),

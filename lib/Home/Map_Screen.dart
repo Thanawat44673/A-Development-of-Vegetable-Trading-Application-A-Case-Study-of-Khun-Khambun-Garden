@@ -6,15 +6,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController? _mapController;
-  TextEditingController _addressController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
   LatLng? _selectedLocation;
-  Set<Marker> _markers = {};
+  final Set<Marker> _markers = {};
   List<dynamic> _placeSuggestions = [];
   static const String _googleApiKey =
       String.fromEnvironment('GOOGLE_MAPS_API_KEY');
@@ -33,7 +35,7 @@ class _MapScreenState extends State<MapScreen> {
         _selectedLocation = LatLng(position.latitude, position.longitude);
         _markers.add(
           Marker(
-            markerId: MarkerId("currentLocation"),
+            markerId: const MarkerId("currentLocation"),
             position: _selectedLocation!,
           ),
         );
@@ -86,7 +88,7 @@ class _MapScreenState extends State<MapScreen> {
         _markers.clear();
         _markers.add(
           Marker(
-            markerId: MarkerId("searchedLocation"),
+            markerId: const MarkerId("searchedLocation"),
             position: _selectedLocation!,
           ),
         );
@@ -129,7 +131,7 @@ class _MapScreenState extends State<MapScreen> {
                 }
               });
             },
-            initialCameraPosition: CameraPosition(
+            initialCameraPosition: const CameraPosition(
               target: LatLng(0, 0), // Default position
               zoom: 2,
             ),
@@ -158,7 +160,7 @@ class _MapScreenState extends State<MapScreen> {
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -169,7 +171,7 @@ class _MapScreenState extends State<MapScreen> {
                         children: [
                           TextField(
                             controller: _addressController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.black),
                               ),
@@ -223,7 +225,7 @@ class _MapScreenState extends State<MapScreen> {
           ),
 
           // วางช่องค้นหาและปุ่มย้อนกลับบนแผนที่
-          Positioned(
+          const Positioned(
             top: 20,
             left: 10,
             right: 10,
@@ -244,7 +246,7 @@ class _MapScreenState extends State<MapScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black87, width: 2),
+                    side: const BorderSide(color: Colors.black87, width: 2),
                     borderRadius: BorderRadius.circular(0),
                   ),
                   backgroundColor: Colors.white,
@@ -254,7 +256,7 @@ class _MapScreenState extends State<MapScreen> {
                   _markers.clear();
                   _getCurrentLocation();
                 },
-                child: Text('ตำแหน่งปัจจุบัน', style: TextStyle(fontSize: 20)),
+                child: const Text('ตำแหน่งปัจจุบัน', style: TextStyle(fontSize: 20)),
               ),
             ),
           ),
@@ -269,7 +271,7 @@ class _MapScreenState extends State<MapScreen> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black87, width: 2),
+                    side: const BorderSide(color: Colors.black87, width: 2),
                     borderRadius: BorderRadius.circular(0),
                   ),
                   backgroundColor: Colors.white,
@@ -278,7 +280,7 @@ class _MapScreenState extends State<MapScreen> {
                 onPressed: () {
                   Navigator.pop(context, _selectedLocation);
                 },
-                child: Text('เพิ่มที่อยู่ใหม่', style: TextStyle(fontSize: 20)),
+                child: const Text('เพิ่มที่อยู่ใหม่', style: TextStyle(fontSize: 20)),
               ),
             ),
           ),

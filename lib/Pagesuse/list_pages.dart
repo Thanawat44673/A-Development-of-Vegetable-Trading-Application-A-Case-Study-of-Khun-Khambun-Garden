@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserOrdersScreen extends StatefulWidget {
+  const UserOrdersScreen({super.key});
+
   @override
   _UserOrdersScreenState createState() => _UserOrdersScreenState();
 }
@@ -15,7 +17,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -24,7 +26,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
         ),
         child: Column(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(
                 top: 50,
                 right: 230,
@@ -45,14 +47,14 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                   final orders = snapshot.data!.docs;
 
                   return ListView(
                     children: orders.map((doc) {
                       return Card(
-                        color: Color.fromARGB(255, 255, 255, 255),
+                        color: const Color.fromARGB(255, 255, 255, 255),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -74,7 +76,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
                                     _cancelOrder(doc.id, doc['veggieId'],
                                         doc['quantity']);
                                   },
-                                  child: Text('ยกเลิก'),
+                                  child: const Text('ยกเลิก'),
                                 )
                               : null,
                         ),
@@ -120,7 +122,7 @@ class _UserOrdersScreenState extends State<UserOrdersScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('คำสั่งซื้อถูกยกเลิกแล้ว')),
+      const SnackBar(content: Text('คำสั่งซื้อถูกยกเลิกแล้ว')),
     );
   }
 }

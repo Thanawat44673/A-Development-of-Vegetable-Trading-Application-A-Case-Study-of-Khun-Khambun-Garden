@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Edit_Promotion_admin extends StatefulWidget {
+  const Edit_Promotion_admin({super.key});
+
   @override
   _Edit_Promotion_adminState createState() => _Edit_Promotion_adminState();
 }
@@ -71,7 +73,7 @@ class _Edit_Promotion_adminState extends State<Edit_Promotion_admin> {
                         } catch (error) {}
                         Navigator.of(context).pop();
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -109,7 +111,7 @@ class _Edit_Promotion_adminState extends State<Edit_Promotion_admin> {
                         } catch (error) {}
                         Navigator.of(context).pop();
                       },
-                      child: SizedBox(
+                      child: const SizedBox(
                         child: Column(
                           children: [
                             Icon(
@@ -174,17 +176,15 @@ class _Edit_Promotion_adminState extends State<Edit_Promotion_admin> {
                   children: [
                     ElevatedButton(
                         onPressed: () async {
-                          if (imageUrl != null) {
-                            FirebaseFirestore.instance
-                                .collection("Promotion_img")
-                                .doc(documentSnapshot?.id)
-                                .update({'รูป': imageUrl});
+                          FirebaseFirestore.instance
+                              .collection("Promotion_img")
+                              .doc(documentSnapshot?.id)
+                              .update({'รูป': imageUrl});
 
-                            Navigator.of(context).pop();
-                          }
-                        },
+                          Navigator.of(context).pop();
+                                                },
                         child: const Text('แก้ไข')),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     ElevatedButton(
@@ -205,13 +205,13 @@ class _Edit_Promotion_adminState extends State<Edit_Promotion_admin> {
     return Scaffold(
       appBar: AppBar(
         //ชื่อมุมขวาบน
-        title: Text('แก้ไขภาพโปรโมชั่น'),
+        title: const Text('แก้ไขภาพโปรโมชั่น'),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       resizeToAvoidBottomInset: false,
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/number1.jpg'), // Replace this with your image asset
@@ -229,7 +229,7 @@ class _Edit_Promotion_adminState extends State<Edit_Promotion_admin> {
                     final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
                     return Card(
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),

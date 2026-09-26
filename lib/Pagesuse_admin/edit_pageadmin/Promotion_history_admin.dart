@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class Promotion_history_admin extends StatefulWidget {
+  const Promotion_history_admin({super.key});
+
   @override
   _Promotion_history_adminState createState() =>
       _Promotion_history_adminState();
@@ -30,9 +32,9 @@ class _Promotion_history_adminState extends State<Promotion_history_admin> {
       _StartDate.text = DateFormat('dd MMM yyyy, HH:mm', 'th').format(
           documentSnapshot['เวลาเริ่มต้น']
               .toDate()
-              .add(Duration(days: 198326)));
+              .add(const Duration(days: 198326)));
       _EndDate.text = DateFormat('dd MMM yyyy, HH:mm', 'th').format(
-          documentSnapshot['เวลาสิ้นสุด'].toDate().add(Duration(days: 198326)));
+          documentSnapshot['เวลาสิ้นสุด'].toDate().add(const Duration(days: 198326)));
     }
 
     await showModalBottomSheet(
@@ -76,7 +78,7 @@ class _Promotion_history_adminState extends State<Promotion_history_admin> {
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2101),
-                    locale: Locale('th', 'TH'), // Thai locale
+                    locale: const Locale('th', 'TH'), // Thai locale
                   );
                   if (pickedDate != null) {
                     TimeOfDay? pickedTime = await showTimePicker(
@@ -117,7 +119,7 @@ class _Promotion_history_adminState extends State<Promotion_history_admin> {
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2101),
-                    locale: Locale('th', 'TH'), // Thai locale
+                    locale: const Locale('th', 'TH'), // Thai locale
                   );
                   if (pickedDate != null) {
                     TimeOfDay? pickedTime = await showTimePicker(
@@ -213,7 +215,7 @@ class _Promotion_history_adminState extends State<Promotion_history_admin> {
                     },
                     child: const Text('แก้ไข'),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   ElevatedButton(
@@ -272,13 +274,13 @@ class _Promotion_history_adminState extends State<Promotion_history_admin> {
     return Scaffold(
       appBar: AppBar(
         //ชื่อมุมขวาบน
-        title: Text('แก้ไขข้อมูลโปรโมชั่น'),
+        title: const Text('แก้ไขข้อมูลโปรโมชั่น'),
         backgroundColor: const Color.fromARGB(255, 216, 255, 171),
       ),
       resizeToAvoidBottomInset: false,
       body: Container(
         alignment: Alignment.center,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 'assets/backgroud2.jpg'), // Replace this with your image asset
@@ -297,7 +299,7 @@ class _Promotion_history_adminState extends State<Promotion_history_admin> {
                     final DocumentSnapshot documentSnapshot =
                         streamSnapshot.data!.docs[index];
                     return Card(
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      color: const Color.fromARGB(255, 255, 255, 255),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
