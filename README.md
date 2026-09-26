@@ -1,23 +1,60 @@
-# แอปพลิเคชันซื้อขายผักสวนขุนคำบุ้น
+# การพัฒนาแอปพลิเคชันซื้อขายผัก กรณีศึกษา: สวนคุณคำบุญ
 
-แอปพลิเคชัน Flutter สำหรับซื้อขายผัก เชื่อมต่อ Firebase Authentication, Cloud Firestore, Firebase Storage และ Firebase Cloud Messaging รวมถึง Google Maps/Places API
+แอปพลิเคชันซื้อขายผักบนมือถือที่พัฒนาด้วย Flutter เพื่อขยายช่องทางการตลาดให้สวนคุณคำบุญ เชื่อมต่อผู้ขายและผู้ซื้อผ่านระบบออนไลน์ ผู้ขายจัดการสินค้าและสต๊อกได้ ส่วนลูกค้าค้นหาผัก เลือกซื้อ และติดตามคำสั่งซื้อในแอปได้
 
-## ข้อกำหนดเบื้องต้น
+> โครงงานนี้จัดทำขึ้นเพื่อการศึกษาและพัฒนาต่อยอด
 
-- Flutter SDK และ Dart SDK ตามเวอร์ชันที่ระบุใน `pubspec.yaml`
-- Android Studio หรือเครื่องมือ Android SDK
-- บัญชี Google สำหรับสร้าง Firebase project และเปิดใช้ Google Maps Platform (หากใช้แผนที่)
-- Firebase CLI และ FlutterFire CLI สำหรับตั้งค่า Firebase
+## ภาพตัวอย่าง
 
-## เริ่มต้นใช้งานหลัง Clone
+<!-- TODO: เพิ่มภาพหน้าจอแอปไว้ใน docs/images/ แล้วแทนที่ placeholder ด้านล่าง -->
+
+| หน้าร้านค้า | รายละเอียดสินค้า | โปรไฟล์ผู้ใช้ |
+| --- | --- | --- |
+| เพิ่มภาพหน้าจอหน้าร้านค้า | เพิ่มภาพหน้าจอรายละเอียดสินค้า | เพิ่มภาพหน้าจอโปรไฟล์ |
+
+## ฟีเจอร์หลัก
+
+- สมัครสมาชิกและเข้าสู่ระบบด้วย Firebase Authentication
+- แสดงรายการผัก รายละเอียดสินค้า ราคา และโปรโมชั่น
+- เลือกสินค้าและจัดการตะกร้าสินค้า
+- สร้างและดูรายการคำสั่งซื้อ
+- หน้าจอผู้ดูแลสำหรับจัดการสินค้า โปรโมชั่น และคำสั่งซื้อ
+- แสดงข้อมูลสถิติการขายสำหรับผู้ดูแล
+- ใช้ Google Maps และ Places เพื่อค้นหา/เลือกตำแหน่งที่อยู่
+- เลือกรูปโปรไฟล์จากแกลเลอรีหรือกล้อง และบันทึกรูปไว้ในเครื่องของผู้ใช้
+- รองรับการรับการแจ้งเตือนผ่าน Firebase Cloud Messaging
+
+> หมายเหตุ: รูปโปรไฟล์ที่บันทึกในเครื่องจะไม่ซิงก์ไปอุปกรณ์อื่น และอาจหายเมื่อถอนการติดตั้งหรือล้างข้อมูลแอป ส่วนการส่ง Push Notification จากหน้าผู้ดูแลต้องตั้งค่า Firebase Cloud Function ฝั่ง server ก่อน
+
+## เทคโนโลยีที่ใช้
+
+- **Flutter / Dart** — แอปพลิเคชันมือถือ
+- **Firebase Authentication** — ยืนยันตัวตนผู้ใช้
+- **Cloud Firestore** — ข้อมูลสมาชิก สินค้า โปรโมชั่น และคำสั่งซื้อ
+- **Firebase Storage** — จัดเก็บไฟล์ที่แอปส่วนอื่นใช้งาน เช่น รูปสินค้า/โปรโมชั่น
+- **Firebase Cloud Messaging** — รับ Push Notification
+- **Google Maps Platform** — แผนที่และค้นหาสถานที่
+
+## เริ่มต้นใช้งาน
+
+### สิ่งที่ต้องติดตั้ง
+
+- Flutter SDK และ Dart SDK ตามข้อกำหนดใน `pubspec.yaml`
+- Android Studio พร้อม Android SDK และ Android Emulator หรืออุปกรณ์ Android
+- Firebase CLI และ FlutterFire CLI
+- Google Maps API key ที่เปิดใช้ API และจำกัดสิทธิ์สำหรับแอปนี้แล้ว
+
+### 1. Clone โปรเจกต์และติดตั้งแพ็กเกจ
 
 ```bash
 git clone <URL-ของ-repository>
-cd flutter_appshop1
+cd <โฟลเดอร์โปรเจกต์>
 flutter pub get
 ```
 
-ตั้งค่า Firebase project ของตนเอง แล้วสร้างไฟล์ตั้งค่าของแพลตฟอร์มผ่าน FlutterFire CLI:
+### 2. ตั้งค่า Firebase ของคุณ
+
+สร้าง Firebase project และตั้งค่า Authentication, Cloud Firestore, Storage และ Cloud Messaging ตามฟีเจอร์ที่ต้องการ จากนั้นเชื่อมแอปกับ Firebase ด้วย FlutterFire CLI:
 
 ```bash
 firebase login
@@ -25,56 +62,81 @@ dart pub global activate flutterfire_cli
 flutterfire configure
 ```
 
-คำสั่งจะสร้าง/ปรับ `lib/firebase_options.dart` และไฟล์ native configuration ที่จำเป็น โปรเจกต์นี้ตั้งค่า Firebase สำหรับ Android ไว้ใน repository บางส่วนแล้ว แต่ผู้ที่นำไปต่อยอดควรผูกกับ Firebase project ของตนเองและตรวจสอบ Firebase rules ก่อนใช้งานจริง ส่วน `google-services.json` และ `GoogleService-Info.plist` เป็นไฟล์เฉพาะโปรเจกต์และถูกยกเว้นจาก Git
+เลือก Android application และ Firebase project ของคุณ คำสั่งจะสร้างหรือปรับ `lib/firebase_options.dart` และไฟล์ native configuration ที่เกี่ยวข้อง ไฟล์ Firebase native config เช่น `google-services.json` เป็นไฟล์เฉพาะโปรเจกต์และถูกยกเว้นจาก Git
 
-## ตั้งค่า Google Maps API Key
+ก่อนใช้งานจริง ให้ตรวจ Firebase Security Rules สำหรับ Firestore และ Storage โดยจำกัดสิทธิ์ตามผู้ใช้และบทบาท ห้ามเปิดอ่าน/เขียนข้อมูลทั้งหมดโดยไม่ตรวจสอบสิทธิ์
 
-Flutter ไม่มีระบบ `.env` ที่ซ่อนค่าไว้ในแอปที่ติดตั้งบนเครื่องผู้ใช้ การใช้ `flutter_dotenv` หรือ `--dart-define` ช่วยแยกค่าจากซอร์สโค้ดได้ แต่ค่าที่ถูกนำไปใช้ใน mobile app ยังสามารถดึงออกจากแอปได้ จึงห้ามใส่ service account key, FCM server credential หรือ secret ที่ให้สิทธิ์สูงไว้ในแอปหรือ `.env`
+### 3. ตั้งค่า Google Maps API key
 
-สำหรับ Places API ใน Dart ให้สร้างไฟล์ `.env.json` ในรากโปรเจกต์ (ไฟล์นี้อยู่ใน `.gitignore`) เช่น:
+Flutter ไม่มี `.env` ที่ซ่อนค่าไว้ในแอปที่ติดตั้งบนอุปกรณ์ ค่า `--dart-define` ช่วยแยกค่าจากซอร์สโค้ด แต่ key ที่ใช้ใน mobile app ยังอาจถูกดึงออกจากตัวแอปได้ ให้ใช้ key ที่จำกัด API และ application/package แล้วเท่านั้น
+
+คัดลอก `.env.example` เป็น `.env.json` ที่โฟลเดอร์เดียวกับ `pubspec.yaml` แล้วใส่ key สำหรับ Places API:
 
 ```json
 {
-  "GOOGLE_MAPS_API_KEY": "ใส่_API_key_ของคุณ"
+  "GOOGLE_MAPS_API_KEY": "ใส่-key-ของคุณ"
 }
 ```
 
-สำหรับ Google Maps SDK บน Android ให้เปิด `android/local.properties` ซึ่ง Flutter สร้างไว้ในเครื่อง แล้วเพิ่มบรรทัดนี้:
+เพิ่ม key สำหรับ Google Maps SDK ใน `android/local.properties` ซึ่ง Flutter สร้างไว้ในเครื่อง โดยคงบรรทัดอื่นในไฟล์ไว้:
 
 ```properties
-MAPS_API_KEY=ใส่_API_key_ของคุณ
+MAPS_API_KEY=ใส่-key-ของคุณ
 ```
 
-รันแอปโดยส่งค่าจากไฟล์ JSON:
+ไฟล์ `.env.json` และ `android/local.properties` ถูกยกเว้นจาก Git แล้ว ห้าม commit key ที่ใช้งานจริง
+
+### 4. รันแอปบน Android
+
+ตรวจสอบอุปกรณ์ที่ Flutter มองเห็น:
 
 ```bash
-flutter run --dart-define-from-file=.env.json
+flutter devices
 ```
 
-จำกัด API key ใน Google Cloud Console ให้ใช้ได้เฉพาะ Android app/package และ API ที่จำเป็น เช่น Maps SDK for Android และ Places API พร้อมตั้ง quota และ billing alert ตามเหมาะสม หากเผยแพร่แอปจริงให้แยก key ตามแพลตฟอร์มและ environment
-
-## การส่ง Push Notification
-
-การส่งข้อความผ่าน FCM HTTP v1 ต้องทำจาก backend ที่เชื่อถือได้ เช่น Firebase Cloud Functions โดยให้ service account อยู่ใน Secret Manager/สภาพแวดล้อม backend และตรวจสิทธิ์ผู้ดูแลก่อนส่ง โค้ดในแอปนี้ไม่เก็บ service account key และปุ่มส่งข้อความจะแจ้งให้ตั้งค่า Cloud Function ก่อน ฟังก์ชันดังกล่าวต้องพัฒนาและ deploy ใน Firebase project ของผู้ดูแลก่อนเปิดใช้งานจริง
-
-## ตรวจสอบและสร้างแอป
+จากนั้นแทน `<device-id>` ด้วย ID ของ Android Emulator หรืออุปกรณ์ที่แสดง:
 
 ```bash
-flutter analyze
-flutter run --dart-define-from-file=.env.json
+flutter run -d <device-id> --dart-define-from-file=.env.json
+```
+
+ตัวอย่าง build APK:
+
+```bash
 flutter build apk --dart-define-from-file=.env.json
 ```
 
-## การจัดการข้อมูลลับ
+## ตัวอย่างการใช้งาน
 
-- ห้าม commit `.env.json`, `android/local.properties`, service account JSON, keystore หรือ credential ใด ๆ
-- `.env.example` เป็นเพียงตัวอย่างสำหรับคัดลอก ห้ามใส่ key ที่ใช้งานจริงลงไป
-- Firebase API key ใน `firebase_options.dart` เป็น client configuration ที่แอปจำเป็นต้องใช้และไม่ใช่การป้องกันฐานข้อมูล ให้ตั้ง Firebase Security Rules, จำกัด API key และเปิด App Check ตามความเหมาะสม
-- หากเคย push key หรือ credential ขึ้น GitHub แล้ว ให้ถือว่าถูกเปิดเผย แม้ลบจากไฟล์หรือประวัติ commit แล้วก็ตาม ให้เพิกถอน/หมุนเวียน key ที่เกี่ยวข้อง ตรวจสอบการใช้งานย้อนหลัง และสร้าง credential ใหม่ก่อนดำเนินงานต่อ
+1. เปิดแอปและสมัครสมาชิกหรือเข้าสู่ระบบ
+2. เลือกดูรายการผักและโปรโมชั่นจากหน้าร้านค้า
+3. เปิดรายละเอียดสินค้า เลือกจำนวน แล้วเพิ่มลงตะกร้า
+4. ตรวจสอบตะกร้าและดำเนินการสร้างคำสั่งซื้อ
+5. ผู้ดูแลเข้าสู่ระบบเพื่อจัดการสินค้า โปรโมชั่น และตรวจสอบคำสั่งซื้อ
 
-## เทคโนโลยีหลัก
+ชื่อเมนูและขั้นตอนอาจแตกต่างตามการตั้งค่าของ Firebase project และเวอร์ชันของแอป
 
-- Flutter / Dart
-- Firebase Authentication, Cloud Firestore, Firebase Storage, Firebase Cloud Messaging
-- Google Maps / Places API
+## การร่วมพัฒนา
 
+ยินดีรับข้อเสนอแนะและการพัฒนาต่อยอด โดยแนะนำให้:
+
+1. Fork repository และสร้าง branch สำหรับการเปลี่ยนแปลง
+2. อธิบายปัญหาหรือฟีเจอร์ที่ต้องการปรับปรุงให้ชัดเจน
+3. ตรวจรูปแบบโค้ดและวิเคราะห์โปรเจกต์ก่อนส่ง Pull Request
+
+```bash
+dart format lib
+flutter analyze
+```
+
+ห้ามแนบ API key, service account JSON, token, keystore หรือข้อมูลส่วนบุคคลลงใน issue, commit หรือ Pull Request
+
+## ความปลอดภัยและข้อมูลลับ
+
+- ห้ามใส่ FCM server credential หรือ service account key ไว้ในแอป Flutter; การส่ง Push Notification ต้องทำผ่าน Cloud Functions หรือ trusted server
+- Firebase API key ใน `firebase_options.dart` เป็น client configuration ไม่ใช่กลไกป้องกันข้อมูล ต้องตั้ง Security Rules และจำกัด key สำหรับ Google APIs ที่เกี่ยวข้อง
+- หาก key เคยถูก commit ให้เพิกถอน/หมุนเวียน key ก่อน และลบออกจากประวัติ Git ก่อนเผยแพร่ repository เป็นสาธารณะ
+
+## License
+
+ขณะนี้ repository ยังไม่มีไฟล์ `LICENSE` จึงยังไม่ได้กำหนดเงื่อนไขการอนุญาตให้นำโค้ดไปใช้หรือเผยแพร่ต่อ หากต้องการเปิดให้บุคคลอื่นนำไปใช้ โปรดเลือก License ที่เหมาะสมและเพิ่มไฟล์ `LICENSE` ก่อนเผยแพร่
