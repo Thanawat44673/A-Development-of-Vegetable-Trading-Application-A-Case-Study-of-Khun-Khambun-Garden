@@ -1,17 +1,15 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_appshop1/Home/home_use.dart';
 import 'package:flutter_appshop1/Pagesuse/Profile_edit/Profile_edit_map.dart';
 import 'package:flutter_appshop1/auth/text_box.dart';
 import 'package:flutter_appshop1/model/profilemember.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile_v extends StatefulWidget {
   const Profile_v({super.key});
@@ -120,7 +118,77 @@ class _Profile_vState extends State<Profile_v> {
   // แบบถ่ายเอง
 
   //อัพโหลดภาพโปรไฟล์
-  String imageUrl = '';
+  String? _localProfileImagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocalProfileImage();
+  }
+
+  Future<void> _loadLocalProfileImage() async {
+    final preferences = await SharedPreferences.getInstance();
+    final savedPath = preferences.getString('profile_image_${currentUser.uid}');
+    if (!mounted) return;
+
+    if (savedPath != null && await File(savedPath).exists()) {
+      setState(() => _localProfileImagePath = savedPath);
+    } else if (savedPath != null) {
+      await preferences.remove('profile_image_${currentUser.uid}');
+    }
+  }
+
+  ImageProvider<Object> _profileImageProvider(dynamic remoteImage) {
+    final localPath = _localProfileImagePath;
+    if (localPath != null) return FileImage(File(localPath));
+
+    if (remoteImage is String && remoteImage.trim().isNotEmpty) {
+      final uri = Uri.tryParse(remoteImage);
+      if (uri != null && (uri.scheme == 'http' || uri.scheme == 'https')) {
+        return NetworkImage(remoteImage);
+      }
+    }
+
+    return const AssetImage('assets/profileuser.jpg');
+  }
+
+  Future<void> _pickAndSaveProfileImage(ImageSource source) async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: source);
+      if (pickedImage == null) return;
+
+      final appDirectory = await getApplicationDocumentsDirectory();
+      final extension = pickedImage.path.contains('.')
+          ? pickedImage.path.split('.').last
+          : 'jpg';
+      final destination = File(
+        '${appDirectory.path}${Platform.pathSeparator}'
+        'profile_${currentUser.uid}.$extension',
+      );
+      await File(pickedImage.path).copy(destination.path);
+
+      final preferences = await SharedPreferences.getInstance();
+      await preferences.setString(
+        'profile_image_${currentUser.uid}',
+        destination.path,
+      );
+
+      if (!mounted) return;
+      setState(() => _localProfileImagePath = destination.path);
+      Navigator.of(context).pop();
+      Fluttertoast.showToast(
+        msg: 'บันทึกรูปโปรไฟล์ไว้ในเครื่องแล้ว',
+        gravity: ToastGravity.BOTTOM,
+      );
+    } catch (error) {
+      if (!mounted) return;
+      Fluttertoast.showToast(
+        msg: 'บันทึกรูปไม่สำเร็จ: $error',
+        gravity: ToastGravity.BOTTOM,
+      );
+    }
+  }
+
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
         context: context,
@@ -134,31 +202,8 @@ class _Profile_vState extends State<Profile_v> {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: () async {
-                        final file = await ImagePicker()
-                            .pickImage(source: ImageSource.gallery);
-                        String fileName =
-                            DateTime.now().microsecondsSinceEpoch.toString();
-                        Reference ref = FirebaseStorage.instance.ref();
-                        Reference referenceDireImages = ref.child('images');
-
-                        Reference referenceImageaToUpload =
-                            referenceDireImages.child(fileName);
-
-                        try {
-                          await referenceImageaToUpload
-                              .putFile(File(file!.path));
-
-                          imageUrl =
-                              await referenceImageaToUpload.getDownloadURL();
-                          await usersCollection.doc(currentUser.email).update({
-                            'รูป': imageUrl,
-                          });
-                          Fluttertoast.showToast(
-                              msg: "อัพโหลดรูปโปรไฟล์เรียบร้อยแล้ว",
-                              gravity: ToastGravity.BOTTOM);
-                        } catch (error) {}
-                      },
+                      onTap: () =>
+                          _pickAndSaveProfileImage(ImageSource.gallery),
                       child: const SizedBox(
                         child: Column(
                           children: [
@@ -174,31 +219,8 @@ class _Profile_vState extends State<Profile_v> {
                   ),
                   Expanded(
                     child: InkWell(
-                      onTap: () async {
-                        final file = await ImagePicker()
-                            .pickImage(source: ImageSource.camera);
-                        String fileName =
-                            DateTime.now().microsecondsSinceEpoch.toString();
-                        Reference ref = FirebaseStorage.instance.ref();
-                        Reference referenceDireImages = ref.child('images');
-
-                        Reference referenceImageaToUpload =
-                            referenceDireImages.child(fileName);
-
-                        try {
-                          await referenceImageaToUpload
-                              .putFile(File(file!.path));
-
-                          imageUrl =
-                              await referenceImageaToUpload.getDownloadURL();
-                          await usersCollection.doc(currentUser.email).update({
-                            'รูป': imageUrl,
-                          });
-                          Fluttertoast.showToast(
-                              msg: "อัพโหลดรูปโปรไฟล์เรียบร้อยแล้ว",
-                              gravity: ToastGravity.BOTTOM);
-                        } catch (error) {}
-                      },
+                      onTap: () =>
+                          _pickAndSaveProfileImage(ImageSource.camera),
                       child: const SizedBox(
                         child: Column(
                           children: [
@@ -247,7 +269,8 @@ class _Profile_vState extends State<Profile_v> {
                       alignment: Alignment.center,
                       child: CircleAvatar(
                         radius: 64,
-                        backgroundImage: NetworkImage(userData['รูป']),
+                        backgroundImage:
+                            _profileImageProvider(userData['รูป']),
                       ),
                     ),
                     Positioned(
